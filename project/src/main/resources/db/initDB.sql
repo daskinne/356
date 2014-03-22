@@ -11,7 +11,8 @@ USE `ece356` ;
 CREATE TABLE IF NOT EXISTS `ece356`.`user` (
     `user_id` INT NOT NULL AUTO_INCREMENT,
     `password` VARCHAR(45) NOT NULL,
-    `Name` VARCHAR(45) NOT NULL,
+    `username` VARCHAR(45) NOT NULL,
+	`first_name` VARCHAR(45) NOT NULL,
     PRIMARY KEY (`user_id`)
 )  ENGINE=InnoDB;
 
@@ -34,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `ece356`.`doctor` (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ece356`.`patient` (
     `user_id` INT NOT NULL,
-    `version_number` INT NOT NULL AUTO_INCREMENT,
+    `version_number` INT NOT NULL,
     `phone_number` VARCHAR(15) NOT NULL,
     `health_card` CHAR(12) NOT NULL,
     `sin` CHAR(9) NOT NULL,
@@ -56,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `ece356`.`patient` (
 -- Table `ece356`.`pati_doct`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ece356`.`pati_doct` (
-    `doctor_account` INT NOT NULL AUTO_INCREMENT,
+    `doctor_account` INT NOT NULL,
     `patient_account` INT NOT NULL,
     `patient_version_number` INT NOT NULL,
     PRIMARY KEY (`doctor_account` , `patient_account` , `patient_version_number`),
