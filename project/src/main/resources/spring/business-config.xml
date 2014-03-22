@@ -46,7 +46,7 @@
                  -->
             </property>
             <!-- gDickens: BOTH Persistence Unit and Packages to Scan are NOT compatible, persistenceUnit will win -->
-            <property name="persistenceUnitName" value="petclinic"/>
+            <property name="persistenceUnitName" value="ece356"/>
             <property name="packagesToScan" value="org.springframework.ece356"/>
         </bean>
 
