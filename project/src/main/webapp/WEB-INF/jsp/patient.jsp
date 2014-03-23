@@ -10,7 +10,10 @@
 <jsp:include page="fragments/headTag.jsp"/>
 <body>
 <div class="container">
+    MOther fuckinger
     
+    <c:out value="${owner.firstName} ${owner.lastName}"/>
+   	
 </div>
 </body>
 

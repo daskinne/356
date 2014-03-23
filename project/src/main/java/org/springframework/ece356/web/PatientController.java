@@ -60,11 +60,8 @@ public class PatientController {
 //	}
 	
 	@RequestMapping(value = "/patient", method = RequestMethod.GET)
-	public String loginUser(Model model) {
-		if(model.containsAttribute("patient")){
-			return "patient";
-		}
-		model.addAttribute("patient", new Login());
+	public String displayPatient(ModelMap modelMap) {
+		
 		return "patient";
 	}
 /*

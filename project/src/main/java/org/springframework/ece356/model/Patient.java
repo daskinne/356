@@ -31,7 +31,7 @@ public class Patient {
 	
     @Column(name = "user_id")
     @NotEmpty
-    private int user_id;
+    private String user_id;
 
     @Column(name = "version_number")
     @NotEmpty
@@ -66,11 +66,11 @@ public class Patient {
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
 //    private Set<Pet> pets;
 
-    public int getUserId() {
+    public String getUserId() {
         return this.user_id;
     }
     
-    public void setUserId(int user_id) {
+    public void setUserId(String user_id) {
         this.user_id = user_id;
     }
 
