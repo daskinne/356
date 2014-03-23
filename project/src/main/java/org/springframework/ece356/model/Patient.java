@@ -35,7 +35,7 @@ public class Patient {
 
     @Column(name = "version_number")
     @NotEmpty
-    private String version_number;
+    private int version_number;
 
     @Column(name = "phone_number")
     @NotEmpty
@@ -74,11 +74,11 @@ public class Patient {
         this.user_id = user_id;
     }
 
-    public String getVersionNumber() {
+    public int getVersionNumber() {
 		return version_number;
 	}
 
-	public void setVersionNumber(String version_number) {
+	public void setVersionNumber(int version_number) {
 		this.version_number = version_number;
 	}
 
