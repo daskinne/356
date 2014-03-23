@@ -11,7 +11,7 @@
 <body>
 <div class="container">
     <jsp:include page="fragments/bodyHeader.jsp"/>
-    <h2>Get Fucked</h2>
+    <h2>Goodbye!</h2>
     <jsp:include page="fragments/footer.jsp"/>
 </div>
 </body>
