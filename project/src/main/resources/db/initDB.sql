@@ -190,7 +190,7 @@ CREATE TABLE IF NOT EXISTS `ece356`.`treatment` (
     `visit_appointment_patient_account` VARCHAR(45) NOT NULL,
     `visit_appointment_patient_version_number` INT NOT NULL,
     `visit_appointment_version_number` INT NOT NULL,
-    `visit_appointment_start_time` TIMESTAMP NOT NULL,
+    `visit_appointment_start_time` DATETIME NOT NULL,
     `start_time` DATETIME NOT NULL,
     `end_time` DATETIME NOT NULL,
     `procedure` VARCHAR(45) NOT NULL,

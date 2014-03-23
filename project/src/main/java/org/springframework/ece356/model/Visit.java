@@ -17,107 +17,107 @@ package org.springframework.ece356.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.core.style.ToStringCreator;
 
 /**
- * Simple JavaBean domain object representing a visit.
- *
- * @author Ken Krebs
+ * Simple JavaBean domain object representing a user.
  */
 @Entity
-@Table(name = "visits")
-public class Visit extends BaseEntity {
-
-    /**
-     * Holds value of property date.
-     */
-    @Column(name = "visit_date")
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
-    private DateTime date;
-
-    /**
-     * Holds value of property description.
-     */
+@Table(name = "visit")
+public class Visit {
+	
+    @Column(name = "appointment_patient_account")
     @NotEmpty
-    @Column(name = "description")
-    private String description;
+    private String appointment_patient_account;
 
-    /**
-     * Holds value of property pet.
-     */
-    @ManyToOne
-    @JoinColumn(name = "pet_id")
-    private Pet pet;
+    @Column(name = "appointment_patient_version_number")
+    @NotEmpty
+    private int appointment_patient_version_number;
 
-
-    /**
-     * Creates a new instance of Visit for the current date
-     */
-    public Visit() {
-        this.date = new DateTime();
+    @Column(name = "appointment_version_number")
+    @NotEmpty
+    private int appointment_version_number;
+    
+    @Column(name = "appointment_start_time")
+    @NotEmpty
+    private DateTime appointment_start_time;
+    
+    @Column(name = "diagnosis")
+    @NotEmpty
+    private String diagnosis;
+    
+    @Column(name = "diagnostic_procedure")
+    @NotEmpty
+    private String diagnostic_procedure;
+    
+    @Column(name = "doctor_comments")
+    @NotEmpty
+    private String doctor_comments;
+    
+    public String getAppointmentPatientAccount() {
+        return this.appointment_patient_account;
+    }
+    
+    public void setAppointmentPatientAccount(String appointment_patient_account) {
+        this.appointment_patient_account = appointment_patient_account;
     }
 
-
-    /**
-     * Getter for property date.
-     *
-     * @return Value of property date.
-     */
-    public DateTime getDate() {
-        return this.date;
+    public int getAppointmentPatientVersionNumber() {
+        return this.appointment_patient_version_number;
     }
-
-    /**
-     * Setter for property date.
-     *
-     * @param date New value of property date.
-     */
-    public void setDate(DateTime date) {
-        this.date = date;
+    
+    public void setAppointmentPatientVersionNumber(int appointment_patient_version_number) {
+        this.appointment_patient_version_number = appointment_patient_version_number;
     }
-
-    /**
-     * Getter for property description.
-     *
-     * @return Value of property description.
-     */
-    public String getDescription() {
-        return this.description;
+    
+    public int getAppointmentVersionNumber() {
+        return this.appointment_version_number;
     }
-
-    /**
-     * Setter for property description.
-     *
-     * @param description New value of property description.
-     */
-    public void setDescription(String description) {
-        this.description = description;
+    
+    public void setAppointmentVersionNumber(int appointment_version_number) {
+        this.appointment_version_number = appointment_version_number;
     }
-
-    /**
-     * Getter for property pet.
-     *
-     * @return Value of property pet.
-     */
-    public Pet getPet() {
-        return this.pet;
+    
+    public DateTime getAppointmentStartTime() {
+        return this.appointment_start_time;
     }
-
-    /**
-     * Setter for property pet.
-     *
-     * @param pet New value of property pet.
-     */
-    public void setPet(Pet pet) {
-        this.pet = pet;
+    
+    public void setAppointmentStartTime(DateTime appointment_start_time) {
+        this.appointment_start_time = appointment_start_time;
     }
-
+    
+    public String getDiagnosis() {
+        return this.diagnosis;
+    }
+    
+    public void setDiagnosis(String diagnosis) {
+        this.diagnosis = diagnosis;
+    }
+    
+    public String getDiagnosticProcedure() {
+        return this.diagnostic_procedure;
+    }
+    
+    public void setDiagnosticProcedure(String diagnostic_procedure) {
+        this.diagnostic_procedure = diagnostic_procedure;
+    }
+    
+    public String getDoctorComments() {
+        return this.doctor_comments;
+    }
+    
+    public void setDoctorComments(String doctor_comments) {
+        this.doctor_comments = doctor_comments;
+    }
+    
+    // TODO: Add toString()
+    @Override
+    public String toString() {
+        return new ToStringCreator(this)
+                .toString();
+    }
 }

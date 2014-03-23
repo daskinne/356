@@ -22,7 +22,7 @@ import org.springframework.ece356.model.Owner;
 import org.springframework.ece356.model.Pet;
 import org.springframework.ece356.model.PetType;
 import org.springframework.ece356.model.Vet;
-import org.springframework.ece356.model.Visit;
+import org.springframework.ece356.model.VisitOld;
 
 
 /**
@@ -40,7 +40,7 @@ public interface ClinicService {
 
     public void savePet(Pet pet) throws DataAccessException;
 
-    public void saveVisit(Visit visit) throws DataAccessException;
+    public void saveVisit(VisitOld visit) throws DataAccessException;
 
     public Collection<Vet> findVets() throws DataAccessException;
 
