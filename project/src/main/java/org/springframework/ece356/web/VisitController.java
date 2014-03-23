@@ -21,7 +21,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ece356.model.Pet;
-import org.springframework.ece356.model.Visit;
+import org.springframework.ece356.model.VisitOld;
 import org.springframework.ece356.service.ClinicService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -60,14 +60,14 @@ public class VisitController {
     @RequestMapping(value = "/owners/*/pets/{petId}/visits/new", method = RequestMethod.GET)
     public String initNewVisitForm(@PathVariable("petId") int petId, Map<String, Object> model) {
         Pet pet = this.clinicService.findPetById(petId);
-        Visit visit = new Visit();
+        VisitOld visit = new VisitOld();
         pet.addVisit(visit);
         model.put("visit", visit);
         return "pets/createOrUpdateVisitForm";
     }
 
     @RequestMapping(value = "/owners/{ownerId}/pets/{petId}/visits/new", method = RequestMethod.POST)
-    public String processNewVisitForm(@Valid Visit visit, BindingResult result, SessionStatus status) {
+    public String processNewVisitForm(@Valid VisitOld visit, BindingResult result, SessionStatus status) {
         if (result.hasErrors()) {
             return "pets/createOrUpdateVisitForm";
         } else {

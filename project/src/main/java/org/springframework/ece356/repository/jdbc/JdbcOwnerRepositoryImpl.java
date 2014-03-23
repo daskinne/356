@@ -33,7 +33,7 @@ import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.ece356.model.Owner;
 import org.springframework.ece356.model.Pet;
 import org.springframework.ece356.model.PetType;
-import org.springframework.ece356.model.Visit;
+import org.springframework.ece356.model.VisitOld;
 import org.springframework.ece356.repository.OwnerRepository;
 import org.springframework.ece356.repository.VisitRepository;
 import org.springframework.ece356.util.EntityUtils;
@@ -74,7 +74,7 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
 
     /**
      * Loads {@link Owner Owners} from the data store by last name, returning all owners whose last name <i>starts</i> with
-     * the given name; also loads the {@link Pet Pets} and {@link Visit Visits} for the corresponding owners, if not
+     * the given name; also loads the {@link Pet Pets} and {@link VisitOld Visits} for the corresponding owners, if not
      * already loaded.
      */
     @Override
@@ -91,7 +91,7 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
     }
 
     /**
-     * Loads the {@link Owner} with the supplied <code>id</code>; also loads the {@link Pet Pets} and {@link Visit Visits}
+     * Loads the {@link Owner} with the supplied <code>id</code>; also loads the {@link Pet Pets} and {@link VisitOld Visits}
      * for the corresponding owner, if not already loaded.
      */
     @Override
@@ -123,8 +123,8 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
         for (JdbcPet pet : pets) {
             owner.addPet(pet);
             pet.setType(EntityUtils.getById(getPetTypes(), PetType.class, pet.getTypeId()));
-            List<Visit> visits = this.visitRepository.findByPetId(pet.getId());
-            for (Visit visit : visits) {
+            List<VisitOld> visits = this.visitRepository.findByPetId(pet.getId());
+            for (VisitOld visit : visits) {
                 pet.addVisit(visit);
             }
         }
@@ -151,7 +151,7 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
     }
 
     /**
-     * Loads the {@link Pet} and {@link Visit} data for the supplied {@link List} of {@link Owner Owners}.
+     * Loads the {@link Pet} and {@link VisitOld} data for the supplied {@link List} of {@link Owner Owners}.
      *
      * @param owners the list of owners for whom the pet and visit data should be loaded
      * @see #loadPetsAndVisits(Owner)

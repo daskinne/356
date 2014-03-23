@@ -21,7 +21,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.springframework.ece356.model.Visit;
+import org.springframework.ece356.model.VisitOld;
 import org.springframework.ece356.repository.VisitRepository;
 import org.springframework.stereotype.Repository;
 
@@ -44,7 +44,7 @@ public class JpaVisitRepositoryImpl implements VisitRepository {
 
 
     @Override
-    public void save(Visit visit) {
+    public void save(VisitOld visit) {
     	if (visit.getId() == null) {
     		this.em.persist(visit);     		
     	}
@@ -56,7 +56,7 @@ public class JpaVisitRepositoryImpl implements VisitRepository {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Visit> findByPetId(Integer petId) {
+    public List<VisitOld> findByPetId(Integer petId) {
         Query query = this.em.createQuery("SELECT visit FROM Visit v where v.pets.id= :id");
         query.setParameter("id", petId);
         return query.getResultList();

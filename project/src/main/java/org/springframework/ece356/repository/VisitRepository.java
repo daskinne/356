@@ -19,7 +19,7 @@ import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.ece356.model.BaseEntity;
-import org.springframework.ece356.model.Visit;
+import org.springframework.ece356.model.VisitOld;
 
 /**
  * Repository class for <code>Visit</code> domain objects All method names are compliant with Spring Data naming
@@ -38,8 +38,8 @@ public interface VisitRepository {
      * @param visit the <code>Visit</code> to save
      * @see BaseEntity#isNew
      */
-    void save(Visit visit) throws DataAccessException;
+    void save(VisitOld visit) throws DataAccessException;
 
-    List<Visit> findByPetId(Integer petId);
+    List<VisitOld> findByPetId(Integer petId);
 
 }
