@@ -51,6 +51,10 @@ public class Patient {
     public Set<Doctor> getAssignedDoctors() {
 		return assigned_doctors;
 	}
+    
+    public int getNumDoctors(){
+    	return doctor_account.length();
+    }
 
 	public void setAssignedDoctors(Set<Doctor> assigned_doctors) {
 		this.assigned_doctors = assigned_doctors;
