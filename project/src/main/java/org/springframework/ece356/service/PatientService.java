@@ -1,12 +1,7 @@
 package org.springframework.ece356.service;
 
-import java.util.Collection;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.dao.DataAccessException;
 import org.springframework.ece356.model.User;
-import org.springframework.ece356.model.Vet;
 import org.springframework.ece356.repository.jdbc.JdbcDoctorRepository;
 import org.springframework.ece356.repository.jdbc.JdbcUserRepository;
 import org.springframework.ece356.util.userType;
@@ -14,12 +9,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class UserService {
+public class PatientService {
 	private JdbcUserRepository userRepository;
 	private JdbcDoctorRepository doctorRepository;
 
 	@Autowired
-	public UserService(JdbcUserRepository userRepository, JdbcDoctorRepository doc) {
+	public PatientService(JdbcUserRepository userRepository, JdbcDoctorRepository doc) {
 		this.userRepository = userRepository;
 		this.doctorRepository = doc;
 	}
@@ -47,22 +42,6 @@ public class UserService {
 //		//else is admin
 		return userType.ADMIN;
 	}
-	
-    @Override
-    @Transactional(readOnly = true)
-    public Collection<Vet> getPatients(User user) {
-    	switch(user.getType()){
-    	case DOCTOR:
-    		break;
-    	case PATIENT:
-    		break;
-    	case STAFF:
-    		break;
-    	case ADMIN:
-    		break;
-    	}
-        return patientRepository.findAllUser(User user);
-    }
 	
 //	public Set<Visit> doctorVisits(User user){
 //		//TODO: verify user is doctor

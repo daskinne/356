@@ -21,6 +21,7 @@ import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.core.style.ToStringCreator;
+import org.springframework.ece356.util.userType;
 
 /**
  * Simple JavaBean domain object representing a user.
@@ -43,6 +44,15 @@ public class User {
 	@Column(name = "is_officer")
 	@NotEmpty
 	private Boolean is_officer;
+	
+	private userType type;
+	
+	public userType getType(){
+		return this.type;
+	}
+	public void setType(userType type){
+		this.type = type;
+	}
 	
 	public Boolean getIsOfficer() {
 		return this.is_officer;

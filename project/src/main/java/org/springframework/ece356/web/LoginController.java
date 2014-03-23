@@ -76,6 +76,8 @@ public class LoginController {
 		if(user == null){
 			return "login";
 		}
+		//Set user type for use by other controllers
+		user.setType(userService.getType(user));
 		modelMap.addAttribute("user", user);
 		return "welcome";
 	}
