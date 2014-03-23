@@ -8,6 +8,7 @@
 
 INSERT IGNORE INTO user VALUES ('daskinne', 'password', 'Dr. Dave', false);
 INSERT IGNORE INTO user VALUES ('pat', 'password',  'Patient Pat', false);
+INSERT IGNORE INTO user VALUES ('pete', 'password',  'Patient Pete', false);
 INSERT IGNORE INTO user VALUES ('steve', 'password', 'Staffer Steve', false);
 INSERT IGNORE INTO user VALUES ('admin', 'password', 'Adam the Admin', true);
 INSERT IGNORE INTO user VALUES ('dan', 'password','Dr. Dan', false);
@@ -19,7 +20,14 @@ INSERT IGNORE INTO doctor VALUES ('dan', 10000);
 -- 0 => Dead
 -- 1 => Sick
 -- 3 => Healthy
-INSERT INTO patient (user_id, version_number, phone_number, health_card, sin, address, current_health, doctor_account) values ('pat',0,'4152002000','123456789012','123456789','Hospital Ave.',0,'daskinne');
+TRUNCATE patient;
+INSERT INTO patient values ('pat',0,'4152002000','123456789012','123456789','Hospital Ave.',0,'daskinne');
+INSERT INTO patient values ('pat',1,'4152002001','000000000001','123456789','Hospital Ave.',0,'daskinne');
+INSERT INTO patient values ('pat',2,'4152002002','000000000002','123456789','Hospital Ave.',0,'daskinne');
+INSERT INTO patient values ('pat',3,'4152002003','000000000003','123456789','Hospital Ave.',0,'daskinne');
+
+INSERT INTO patient values ('pete',0,'4152002003','000000000003','123456789','Hospital Ave.',0,'daskinne');
+INSERT INTO patient values ('pete',1,'4152002003','000000000003','123456789','Hospital Ave.',0,'dan');
 
 -- Assign patient pat to Doctor Dan
 INSERT IGNORE INTO pati_doct VALUES ('dan','pat',0);

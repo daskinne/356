@@ -15,8 +15,8 @@
 				href="<spring:url value="/" htmlEscape="true" />"><i
 					class="icon-home"></i> Home</a></li>
 			<li style="width: 130px;"><a
-				href="<spring:url value="/owners/find.html" htmlEscape="true" />"><i
-					class="icon-search"></i>EX AUTH PAGE</a></li>
+				href="<spring:url value="/patients" htmlEscape="true" />"><i
+					class="icon-search"></i>Patients</a></li>
 			<li style="width: 140px;"><a
 				href="<spring:url value="/vets.html" htmlEscape="true" />"><i
 					class="icon-th-list"></i> Veterinarians</a></li>
