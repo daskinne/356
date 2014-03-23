@@ -16,7 +16,7 @@
 package org.springframework.ece356.repository.springdatajpa;
 
 import org.springframework.data.repository.Repository;
-import org.springframework.ece356.model.Visit;
+import org.springframework.ece356.model.VisitOld;
 import org.springframework.ece356.repository.VisitRepository;
 
 /**
@@ -25,5 +25,5 @@ import org.springframework.ece356.repository.VisitRepository;
  * @author Michael Isvy
  * @since 15.1.2013
  */
-public interface SpringDataVisitRepository extends VisitRepository, Repository<Visit, Integer> {
+public interface SpringDataVisitRepository extends VisitRepository, Repository<VisitOld, Integer> {
 }

@@ -32,7 +32,7 @@ import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.ece356.model.Owner;
 import org.springframework.ece356.model.Pet;
 import org.springframework.ece356.model.PetType;
-import org.springframework.ece356.model.Visit;
+import org.springframework.ece356.model.VisitOld;
 import org.springframework.ece356.repository.OwnerRepository;
 import org.springframework.ece356.repository.PetRepository;
 import org.springframework.ece356.repository.VisitRepository;
@@ -97,8 +97,8 @@ public class JdbcPetRepositoryImpl implements PetRepository {
         owner.addPet(pet);
         pet.setType(EntityUtils.getById(findPetTypes(), PetType.class, pet.getTypeId()));
 
-        List<Visit> visits = this.visitRepository.findByPetId(pet.getId());
-        for (Visit visit : visits) {
+        List<VisitOld> visits = this.visitRepository.findByPetId(pet.getId());
+        for (VisitOld visit : visits) {
             pet.addVisit(visit);
         }
         return pet;
