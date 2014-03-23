@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS `ece356`.`user` (
     `user_id` VARCHAR(45) NOT NULL,
     `password` VARCHAR(45) NOT NULL,
 	`first_name` VARCHAR(45) NOT NULL,
+	`is_officer` BOOLEAN DEFAULT false,
     PRIMARY KEY (`user_id`)
 )  ENGINE=InnoDB;
 

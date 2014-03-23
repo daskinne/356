@@ -17,17 +17,21 @@ package org.springframework.ece356.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ece356.model.User;
+import org.springframework.ece356.repository.jdbc.JdbcDoctorRepository;
 import org.springframework.ece356.repository.jdbc.JdbcUserRepository;
+import org.springframework.ece356.util.userType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService {
 	private JdbcUserRepository userRepository;
+	private JdbcDoctorRepository doctorRepository;
 
 	@Autowired
-	public UserService(JdbcUserRepository userRepository) {
+	public UserService(JdbcUserRepository userRepository, JdbcDoctorRepository doc) {
 		this.userRepository = userRepository;
+		this.doctorRepository = doc;
 	}
 
 	@Transactional(readOnly = true)
@@ -41,6 +45,22 @@ public class UserService {
 		User user = userRepository.findByLogin(username, password);
 		return user;
 	}
+	
+	public userType getType(User user){
+		if(doctorRepository.findById(user.getUserId()) != null){
+			return userType.DOCTOR;
+		}
+		//TODO: check Patient table to see if patient
+//		return userType.DOCTOR;
+//		//TODO: check Staff table to see if staff
+//		return userType.STAFF;
+//		//else is admin
+		return userType.ADMIN;
+	}
+	
+//	public Set<Visit> doctorVisits(User user){
+//		//TODO: verify user is doctor
+//	}
 
 	// @Transactional(readOnly = true)
 	// public Collection<PetType> findPetTypes() throws DataAccessException {

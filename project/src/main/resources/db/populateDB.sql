@@ -6,11 +6,11 @@
 -- INSERT IGNORE INTO vets VALUES (6, 'Sharon', 'Jenkins');
 
 
-INSERT IGNORE INTO user VALUES ('daskinne', 'password', 'Dr. Dave');
-INSERT IGNORE INTO user VALUES ('pat', 'password',  'Patient Pat');
-INSERT IGNORE INTO user VALUES ('steve', 'password', 'Staffer Steve');
-INSERT IGNORE INTO user VALUES ('admin', 'password', 'Adam the Admin');
-INSERT IGNORE INTO user VALUES ('dan', 'password','Dr. Dan');
+INSERT IGNORE INTO user VALUES ('daskinne', 'password', 'Dr. Dave', false);
+INSERT IGNORE INTO user VALUES ('pat', 'password',  'Patient Pat', false);
+INSERT IGNORE INTO user VALUES ('steve', 'password', 'Staffer Steve', false);
+INSERT IGNORE INTO user VALUES ('admin', 'password', 'Adam the Admin', true);
+INSERT IGNORE INTO user VALUES ('dan', 'password','Dr. Dan', false);
 
 INSERT IGNORE INTO doctor VALUES ('daskinne', 9999);
 INSERT IGNORE INTO doctor VALUES ('dan', 10000);

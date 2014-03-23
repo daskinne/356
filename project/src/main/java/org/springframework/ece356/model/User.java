@@ -40,6 +40,18 @@ public class User {
 	@NotEmpty
 	private String first_name;
 
+	@Column(name = "is_officer")
+	@NotEmpty
+	private Boolean is_officer;
+	
+	public Boolean getIsOfficer() {
+		return this.is_officer;
+	}
+
+	public void setIsOfficer(Boolean is_officer) {
+		this.is_officer = is_officer;
+	}
+	
 	// @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
 	// private Set<Pet> pets;
 
