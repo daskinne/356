@@ -86,7 +86,7 @@ public class JdbcUserRepository {
             params.put("username", username);
             params.put("password", password);
             user = this.namedParameterJdbcTemplate.queryForObject(
-                    "SELECT user_id FROM user WHERE username= :username and password = :password",
+                    "SELECT * FROM user WHERE user_id= :username and password = :password",
                     params,
                     ParameterizedBeanPropertyRowMapper.newInstance(User.class)
             );
@@ -119,11 +119,13 @@ public class JdbcUserRepository {
     public void save(User user) throws DataAccessException {
         BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(user);
         if (user.isNew()) {
-            Number newKey = this.insertUser.executeAndReturnKey(parameterSource);
-            user.setId(newKey.intValue());
+        	//TODO: not implemented, manual adding of users
+			// Number newKey = this.insertUser.executeAndReturnKey(parameterSource);
+			// String name = "user";
+			// user.setId(newKey.intValue());
         } else {
             this.namedParameterJdbcTemplate.update(
-                    "UPDATE user SET password=:password, username=:username, first_name=:first_name " +
+                    "UPDATE user SET password=:password, first_name=:first_name " +
                             "WHERE user_id=:user_id",
                     parameterSource);
         }

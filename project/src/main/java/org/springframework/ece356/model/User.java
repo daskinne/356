@@ -28,109 +28,59 @@ import org.springframework.core.style.ToStringCreator;
 @Entity
 @Table(name = "user")
 public class User {
-    @Column(name = "user_id")
-    @NotEmpty
-    private int user_id;
+	@Column(name = "user_id")
+	@NotEmpty
+	private String user_id;
 
-    @Column(name = "username")
-    @NotEmpty
-    private String username;
+	@Column(name = "password")
+	@NotEmpty
+	private String password;
 
-    @Column(name = "password")
-    @NotEmpty
-    private String password;
-    
-    @Column(name = "first_name")
-    @NotEmpty
-    private String first_name;
+	@Column(name = "first_name")
+	@NotEmpty
+	private String first_name;
 
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
-//    private Set<Pet> pets;
+	// @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
+	// private Set<Pet> pets;
 
-    public int getUserId() {
-        return this.user_id;
-    }
+	public String getUserId() {
+		return this.user_id;
+	}
 
-    public String getUsername() {
-        return this.username;
-    }
-    public String getPassword() {
-        return this.password;
-    }
-    public String getFistName() {
-        return this.first_name;
-    }
+	public String getPassword() {
+		return this.password;
+	}
 
- 
-    public void setUserId(int user_id) {
-        this.user_id = user_id;
-    }
-    public void setUsername(String username) {
-        this.username = username;
-    }
-    public void setFistName(String first_name) {
-        this.first_name = first_name;
-    }
-    
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public String getFistName() {
+		return this.first_name;
+	}
 
-//    public List<Pet> getPets() {
-//        List<Pet> sortedPets = new ArrayList<Pet>(getPetsInternal());
-//        PropertyComparator.sort(sortedPets, new MutableSortDefinition("name", true, true));
-//        return Collections.unmodifiableList(sortedPets);
-//    }
+	public void setUserId(String user_id) {
+		this.user_id = user_id;
+	}
 
-//    public void addPet(Pet pet) {
-//        getPetsInternal().add(pet);
-//        pet.setOwner(this);
-//    }
+	public void setFistName(String first_name) {
+		this.first_name = first_name;
+	}
 
-    /**
-     * Return the User with the given id, or null if none found for this Owner.
-     */
-    public User getUser(int id) {
-    	//get by id
-        //return getUser(id, false);
-    	return null;
-    }
-
-    /**
-     * Return the User with the given name and password
-     *
-     * @param name to test
-     * @return true if pet name is already in use
-     */
-    public User getUser(String username, String password) {
-        username = username.toLowerCase();
-//        for (Pet pet : getPetsInternal()) {
-//            if (!ignoreNew || !pet.isNew()) {
-//                String compName = pet.getName();
-//                compName = compName.toLowerCase();
-//                if (compName.equals(name)) {
-//                    return pet;
-//                }
-//            }
-//        }
-        return null;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
     @Override
     public String toString() {
         return new ToStringCreator(this)
-                .append("username", this.getUsername())
                 .append("userid", this.getUserId())
                 .toString();
     }
     
     public boolean isNew() {
-        return (this.user_id == 0);
+        return (this.user_id == null);
     }
-    public int getId(int id) {
+    public String getId(String id) {
         return this.user_id;
     }
-    public void setId(int id) {
+    public void setId(String id) {
         this.user_id = id;
     }
 }
