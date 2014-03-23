@@ -19,7 +19,7 @@ INSERT IGNORE INTO doctor VALUES ('dan', 10000);
 -- 0 => Dead
 -- 1 => Sick
 -- 3 => Healthy
-INSERT INTO patient (user_id, version_number, phone_number, health_card, sin, address, current_health, doctor_account) values (2,0,'4152002000','123456789012','123456789','Hospital Ave.',0,1);
+INSERT INTO patient (user_id, version_number, phone_number, health_card, sin, address, current_health, doctor_account) values ('pat',0,'4152002000','123456789012','123456789','Hospital Ave.',0,'daskinne');
 
 -- Assign patient pat to Doctor Dan
 INSERT IGNORE INTO pati_doct VALUES ('dan','pat',0);
