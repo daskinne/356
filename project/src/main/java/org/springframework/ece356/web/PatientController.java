@@ -25,6 +25,7 @@ import org.springframework.ece356.service.ClinicService;
 import org.springframework.ece356.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -51,6 +52,9 @@ public class PatientController {
         model.put("patients", patients);
         return "patientList";
     }
-
-
+	
+	@RequestMapping(value = "/patient", method = RequestMethod.GET)
+	public String displayPatient(ModelMap modelMap) {
+		return "patient";
+	}
 }
