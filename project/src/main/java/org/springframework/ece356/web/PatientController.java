@@ -19,11 +19,14 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ece356.model.Patients;
+import org.springframework.ece356.model.User;
 import org.springframework.ece356.model.Vets;
 import org.springframework.ece356.service.ClinicService;
 import org.springframework.ece356.service.UserService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
@@ -31,7 +34,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 public class PatientController {
 
     private final UserService userService;
-
 
     @Autowired
     public PatientController(UserService userService) {
@@ -45,7 +47,7 @@ public class PatientController {
         Vets vets = new Vets();
         //vets.getVetList().addAll(this.clinicService.findVets());
         Patients patients = new Patients();
-        patients.getPatientList().addAll(this.userService.getPatients(model.get("user")));
+        patients.getPatientList().addAll(this.userService.getPatients((User) model.get("user")));
         model.put("patients", patients);
         return "patientList";
     }
