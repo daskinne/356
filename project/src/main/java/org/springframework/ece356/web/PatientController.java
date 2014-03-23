@@ -15,87 +15,49 @@
  */
 package org.springframework.ece356.web;
 
-
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ece356.model.Login;
+import org.springframework.ece356.model.Patients;
 import org.springframework.ece356.model.User;
-import org.springframework.ece356.service.PatientService;
+import org.springframework.ece356.model.Vets;
+import org.springframework.ece356.service.ClinicService;
 import org.springframework.ece356.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-/**
- * @author Juergen Hoeller
- * @author Mark Fisher
- * @author Ken Krebs
- * @author Arjen Poutsma
- */
 @Controller
-@SessionAttributes("patient")
-//http://docs.spring.io/spring/docs/3.2.x/spring-framework-reference/html/mvc.html#mvc-ann-sessionattrib
+@SessionAttributes("user")
 public class PatientController {
-	private final PatientService patientService;
 
-	@Autowired
-	public PatientController(PatientService patientService) {
-		this.patientService = patientService;
-	}
+    private final UserService userService;
 
-//	@RequestMapping("/login")
-//	// @SessionAttributes({"user"})
-//	public String loginUser(HttpSession session) {
-//		session.setAttribute("id", 1);
-//		session.setAttribute("type", userType.DOCTOR);
-//		// input
-//		return "welcome";
-//	}
+    @Autowired
+    public PatientController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @RequestMapping("/patients")
+    public String showPatientList(Map<String, Object> model) {
+    	if(model.get("user") == null){
+    		return "redirect:/login";
+    	}
+        // Here we are returning an object of type 'Vets' rather than a collection of Vet objects 
+        // so it is simpler for Object-Xml mapping
+        Vets vets = new Vets();
+        //vets.getVetList().addAll(this.clinicService.findVets());
+        Patients patients = new Patients();
+        patients.getPatientList().addAll(this.userService.getPatients((User) model.get("user")));
+        model.put("patients", patients);
+        return "patientList";
+    }
 	
 	@RequestMapping(value = "/patient", method = RequestMethod.GET)
 	public String displayPatient(ModelMap modelMap) {
-		
 		return "patient";
 	}
-/*
-	@RequestMapping(value = "/patient", method = RequestMethod.POST)
-	public String loginUser(@Valid Login login, BindingResult result, ModelMap modelMap) {
-		System.out.printf("%s%s",login.getUsername(), login.getPassword());
-	    if(result.hasErrors()) {
-            return "patient";
-        }
-		User user = userService.validateLogin(login.getUsername(), login.getPassword());
-		if(user == null){
-			return "patient";
-		}
-		modelMap.addAttribute("user", user);
-		return "patient";
-	}
-*/
-	// Access example:
-	// @Controller
-	// @SessionAttributes({"user"})
-	// public class InspectionTypeController {
-	//
-	// @RequestMapping(value="/addInspectionType.htm", method =
-	// RequestMethod.POST )
-	// public void addInspectionType(InspectionType inspectionType,
-	// @ModelAttribute User user) {
-	// System.out.println("User: "+ user.getUserDetails().getFirstName);
-	// }
-	// }
-/*
-	@RequestMapping("/logout")
-	public String logoutUser(ModelMap modelMap, HttpSession session) {
-		session.removeAttribute("user");
-		modelMap.remove("user");
-		return "logout";
-	}*/
 }

@@ -1,8 +1,15 @@
 package org.springframework.ece356.service;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.dao.DataAccessException;
+import org.springframework.ece356.model.Patient;
 import org.springframework.ece356.model.User;
+import org.springframework.ece356.model.Vet;
 import org.springframework.ece356.repository.jdbc.JdbcDoctorRepository;
+import org.springframework.ece356.repository.jdbc.JdbcPatientRepository;
 import org.springframework.ece356.repository.jdbc.JdbcUserRepository;
 import org.springframework.ece356.util.userType;
 import org.springframework.stereotype.Service;
@@ -12,16 +19,23 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 	private JdbcUserRepository userRepository;
 	private JdbcDoctorRepository doctorRepository;
+	private JdbcPatientRepository patientRepository;
 
 	@Autowired
-	public UserService(JdbcUserRepository userRepository, JdbcDoctorRepository doc) {
+	public UserService(JdbcUserRepository userRepository, JdbcDoctorRepository doc, JdbcPatientRepository patient) {
 		this.userRepository = userRepository;
 		this.doctorRepository = doc;
+		this.patientRepository = patient;
 	}
 
 	@Transactional(readOnly = true)
 	public User findUserById(int id) {
 		return userRepository.findById(id);
+	}
+
+	@Transactional(readOnly = true)
+	public Patient findPatientById(String id) {
+		return patientRepository.findPatientById(id);
 	}
 
 	@Transactional(readOnly = true)
@@ -42,6 +56,22 @@ public class UserService {
 //		//else is admin
 		return userType.ADMIN;
 	}
+	
+    @Transactional(readOnly = true)
+    public Collection<Patient> getPatients(User user) {
+    	//TODO: add user access logic
+    	switch(user.getType()){
+    	case DOCTOR:
+    		break;
+    	case PATIENT:
+    		break;
+    	case STAFF:
+    		break;
+    	case ADMIN:
+    		break;
+    	}
+        return patientRepository.findAllPatients(user);
+    }
 	
 //	public Set<Visit> doctorVisits(User user){
 //		//TODO: verify user is doctor
