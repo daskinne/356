@@ -17,7 +17,7 @@ import org.springframework.core.style.ToStringCreator;
 public class Doctor {
     
     // TODO fill this out in services
-    private Set<Doctor> patients;
+    private Set<Patient> patients;
     // TODO fill this out in services
     private Set<Appointment> appointments;
     
