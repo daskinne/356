@@ -48,7 +48,7 @@ import org.springframework.stereotype.Repository;
  * @author Mark Fisher
  */
 @Repository
-public class JdbcPetRepositoryImpl implements PetRepository {
+public class ZJdbcPetRepositoryImpl implements PetRepository {
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -60,7 +60,7 @@ public class JdbcPetRepositoryImpl implements PetRepository {
 
 
     @Autowired
-    public JdbcPetRepositoryImpl(DataSource dataSource, OwnerRepository ownerRepository, VisitRepository visitRepository) {
+    public ZJdbcPetRepositoryImpl(DataSource dataSource, OwnerRepository ownerRepository, VisitRepository visitRepository) {
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 
         this.insertPet = new SimpleJdbcInsert(dataSource)
@@ -82,14 +82,14 @@ public class JdbcPetRepositoryImpl implements PetRepository {
 
     @Override
     public Pet findById(int id) throws DataAccessException {
-        JdbcPet pet;
+        ZJdbcPet pet;
         try {
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("id", id);
             pet = this.namedParameterJdbcTemplate.queryForObject(
                     "SELECT id, name, birth_date, type_id, owner_id FROM pets WHERE id=:id",
                     params,
-                    new JdbcPetRowMapper());
+                    new ZJdbcPetRowMapper());
         } catch (EmptyResultDataAccessException ex) {
             throw new ObjectRetrievalFailureException(Pet.class, new Integer(id));
         }

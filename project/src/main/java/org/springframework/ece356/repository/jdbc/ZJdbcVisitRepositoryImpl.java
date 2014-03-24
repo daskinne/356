@@ -45,14 +45,14 @@ import org.springframework.stereotype.Repository;
  * @author Michael Isvy
  */
 @Repository
-public class JdbcVisitRepositoryImpl implements VisitRepository {
+public class ZJdbcVisitRepositoryImpl implements VisitRepository {
 
     private JdbcTemplate jdbcTemplate;
 
     private SimpleJdbcInsert insertVisit;
 
     @Autowired
-    public JdbcVisitRepositoryImpl(DataSource dataSource) {
+    public ZJdbcVisitRepositoryImpl(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
 
         this.insertVisit = new SimpleJdbcInsert(dataSource)

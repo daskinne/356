@@ -45,12 +45,12 @@ import org.springframework.stereotype.Repository;
  * @author Michael Isvy
  */
 @Repository
-public class JdbcVetRepositoryImpl implements VetRepository {
+public class ZJdbcVetRepositoryImpl implements VetRepository {
 
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public JdbcVetRepositoryImpl(JdbcTemplate jdbcTemplate) {
+    public ZJdbcVetRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
