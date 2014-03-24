@@ -2,6 +2,8 @@ package org.springframework.ece356.repository.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +21,9 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.ece356.model.Appointment;
 import org.springframework.ece356.model.Doctor;
+import org.springframework.ece356.model.Patient;
 import org.springframework.ece356.model.Prescription;
 import org.springframework.ece356.model.User;
 import org.springframework.ece356.model.Visit;
@@ -110,9 +114,31 @@ public class JdbcDoctorRepository {
                     parameterSource);
         }
     }
-
-    //TODO: Get patients for a doctor
-    //TODO: Get visits for a doctor
+    
+    
+    // TODO:
+    public Collection<Appointment> findAllAppointmentsForDoctor(String user_id) {
+//        List<Appointment> appointments = new ArrayList<Appointment>();
+//        String appointment_sql = "SELECT patient_account, patient_version_number, doctor_account, version_number, start_time FROM appointment WHERE doctor_account = '"
+//                + user_id + "'";
+//        String max_rev_sql = "(SELECT "
+//                + "patient_account, patient_version_number, doctor_account, max(version_number), start_time "
+//                + "AS maxrev FROM patient where doctor_account = '"
+//                + user_id
+//                + "' GROUP BY patient_account, patient_version_number, doctor_account, start_time) UNION DISTINCT ("
+//                + appointment_sql + ")";
+//        String main_query = "(SELECT c.*  FROM patient c INNER JOIN ( "
+//                + max_rev_sql
+//                + " ) b "
+//                + "ON c.user_id=b.user_id AND c.version_number=b.maxrev) UNION DISTINCT ("
+//                + appointment_sql + ")";
+//        
+//        patients.addAll(this.jdbcTemplate.query(main_query,
+//                ParameterizedBeanPropertyRowMapper.newInstance(Patient.class)));
+//        
+//        return patients;
+        return null;
+    }
     //TODO:
 
 

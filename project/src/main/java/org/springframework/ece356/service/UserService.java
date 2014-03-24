@@ -95,6 +95,11 @@ public class UserService {
     public void savePatient(Patient patient) {
     	patientRepository.savePatient(patient);
     }
+	
+    public void populateVisitsForDoctor(Doctor doctor) {
+        doctor.appointments = doctorRepository.findAllAppointmentsForDoctor(doctor.getUserId());
+    }
+    
 //	public Set<Visit> doctorVisits(User user){
 //		//TODO: verify user is doctor
 //	}
