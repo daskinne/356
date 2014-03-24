@@ -62,7 +62,7 @@ public class JdbcUserRepository {
      * Loads the {@link User} with the supplied <code>id</code>; also loads the {@link Pet Pets} and {@link VisitOld Visits}
      * for the corresponding owner, if not already loaded.
      */
-    public User findById(int id) throws DataAccessException {
+    public User findByKey(int id) throws DataAccessException {
         User user;
         try {
             Map<String, Object> params = new HashMap<String, Object>();
