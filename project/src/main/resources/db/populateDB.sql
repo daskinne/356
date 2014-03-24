@@ -20,7 +20,6 @@ INSERT IGNORE INTO doctor VALUES ('dan', 10000);
 -- 0 => Dead
 -- 1 => Sick
 -- 3 => Healthy
-TRUNCATE patient;
 INSERT INTO patient values ('pat',0,'4152002000','123456789012','123456789','Hospital Ave.',0,'daskinne');
 INSERT INTO patient values ('pat',1,'4152002001','000000000001','123456789','Hospital Ave.',0,'daskinne');
 INSERT INTO patient values ('pat',2,'4152002002','000000000002','123456789','Hospital Ave.',0,'daskinne');
