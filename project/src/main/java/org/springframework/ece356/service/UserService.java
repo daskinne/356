@@ -67,12 +67,16 @@ public class UserService {
     	switch(user.getType()){
     	case DOCTOR:
     	    patients = patientRepository.findAllPatientsForDoctor(user.getUserId());
+    	    break;
     	case PATIENT:
     	    patients = new ArrayList<Patient>();
+    	    break;
     	case STAFF:
     	    patients = patientRepository.findAllPatientsForStaff(user.getUserId());
+    	    break;
     	case ADMIN:
     	    patients = new ArrayList<Patient>();
+    	    break;
 	    default:
 	        patients = new ArrayList<Patient>();
     	}
@@ -86,7 +90,11 @@ public class UserService {
     public void populatePatientsForDoctor(Doctor doctor) {
         doctor.patients = patientRepository.findAllPatientsForDoctor(doctor.getUserId());
     }
-	
+    
+    @Transactional
+    public void savePatient(Patient patient) {
+    	patientRepository.savePatient(patient);
+    }
 //	public Set<Visit> doctorVisits(User user){
 //		//TODO: verify user is doctor
 //	}

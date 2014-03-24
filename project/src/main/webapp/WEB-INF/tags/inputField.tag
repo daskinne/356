@@ -5,6 +5,8 @@
               description="Name of corresponding property in bean object" %>
 <%@ attribute name="label" required="true" rtexprvalue="true"
               description="Label appears in red color if input is considered as invalid after submission" %>
+<%@ attribute name="readonly" rtexprvalue="true"
+              description="Says if input field is read-only" %>
 
 <spring:bind path="${name}">
     <c:set var="cssGroup" value="control-group ${status.error ? 'error' : '' }"/>
@@ -12,7 +14,7 @@
         <label class="control-label">${label}</label>
 
         <div class="controls">
-            <form:input path="${name}"/>
+            <form:input readonly="${readonly}" path="${name}"/>
             <span class="help-inline">${status.errorMessage}</span>
         </div>
     </div>
