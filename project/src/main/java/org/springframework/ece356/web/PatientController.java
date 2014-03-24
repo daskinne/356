@@ -18,6 +18,7 @@ package org.springframework.ece356.web;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ece356.model.Patient;
 import org.springframework.ece356.model.Patients;
 import org.springframework.ece356.model.User;
 import org.springframework.ece356.model.Vets;
@@ -26,6 +27,7 @@ import org.springframework.ece356.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -55,7 +57,22 @@ public class PatientController {
     }
 	
 	@RequestMapping(value = "/patient", method = RequestMethod.GET)
-	public String displayPatient(ModelMap modelMap) {
+	public String displayPatient(Map<String, Object> model) {
+		if(model.get("user") == null){
+    		return "redirect:/login";
+    	}
+		Patient patient = this.userService.findPatientById(((User) model.get("user")).getUserId());
+		model.put("patient", patient);
+		return "patient";
+	}
+	
+	@RequestMapping(value = "/patient/{patientId}/profile", method = RequestMethod.GET)
+    public String displayPatientLookup(@PathVariable("patientId") String patientId, Map<String, Object> model) {
+		if(model.get("user") == null){
+    		return "redirect:/login";
+    	}
+		Patient patient = this.userService.findPatientById(patientId);
+		model.put("patient", patient);
 		return "patient";
 	}
 }
