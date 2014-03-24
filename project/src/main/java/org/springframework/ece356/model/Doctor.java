@@ -1,5 +1,6 @@
 package org.springframework.ece356.model;
 
+import java.util.Collection;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -17,9 +18,10 @@ import org.springframework.core.style.ToStringCreator;
 public class Doctor {
     
     // TODO fill this out in services
-    private Set<Patient> patients;
+    public Collection<Patient> patients;
+    
     // TODO fill this out in services
-    private Set<Appointment> appointments;
+    public Collection<Appointment> appointments;
     
 	@Column(name = "user_id")
 	@NotEmpty

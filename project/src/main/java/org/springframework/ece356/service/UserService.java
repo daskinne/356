@@ -7,6 +7,7 @@ import java.util.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
+import org.springframework.ece356.model.Doctor;
 import org.springframework.ece356.model.Patient;
 import org.springframework.ece356.model.User;
 import org.springframework.ece356.model.Vet;
@@ -61,18 +62,29 @@ public class UserService {
 	
     @Transactional(readOnly = true)
     public Collection<Patient> getPatients(User user) {
+        Collection<Patient> patients;
     	//TODO: add user access logic
     	switch(user.getType()){
     	case DOCTOR:
-    	    return patientRepository.findAllPatientsForDoctor(user);
+    	    patients = patientRepository.findAllPatientsForDoctor(user.getUserId());
     	case PATIENT:
-    	    return new ArrayList<Patient>();
+    	    patients = new ArrayList<Patient>();
     	case STAFF:
-    	    return patientRepository.findAllPatientsForStaff(user);
+    	    patients = patientRepository.findAllPatientsForStaff(user.getUserId());
     	case ADMIN:
-            return new ArrayList<Patient>();
+    	    patients = new ArrayList<Patient>();
+	    default:
+	        patients = new ArrayList<Patient>();
     	}
+        
+        // Populate list of doctors for a patient.
+        for (Patient patient : patients) patientRepository.getDoctorsForPatient(patient);
+        
         return new ArrayList<Patient>();
+    }
+    
+    public void populatePatientsForDoctor(Doctor doctor) {
+        doctor.patients = patientRepository.findAllPatientsForDoctor(doctor.getUserId());
     }
 	
 //	public Set<Visit> doctorVisits(User user){

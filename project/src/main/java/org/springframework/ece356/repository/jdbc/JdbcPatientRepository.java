@@ -116,7 +116,7 @@ public class JdbcPatientRepository {
 		return patient;
 	}
 	
-	public Patient getDoctorsForPatient(Patient patient) {
+	public void getDoctorsForPatient(Patient patient) {
         final List<Doctor> secondary_doctors = this.jdbcTemplate
                 .query("SELECT doctor_account as user_id FROM pati_doct WHERE patient_account = ? and patient_version_number = ?",
                         ParameterizedBeanPropertyRowMapper
@@ -128,15 +128,14 @@ public class JdbcPatientRepository {
         docs_set.add(primary_doctor);
         docs_set.addAll(secondary_doctors);
         patient.setAssignedDoctors(docs_set);
-        return patient;
 	}
-	   
-    public Collection<Patient> findAllPatientsForDoctor(User user) {
+	
+    public Collection<Patient> findAllPatientsForDoctor(String user_id) {
         List<Patient> patients = new ArrayList<Patient>();
         String doctor_patient_sql = "SELECT patient_account, patient_version_number FROM pati_doct WHERE doctor_account = '"
-                + user.getUserId() + "'";
+                + user_id + "'";
         String max_rev_sql = "(SELECT user_id, max(version_number) AS maxrev FROM patient where doctor_account = '"
-                + user.getUserId()
+                + user_id
                 + "' GROUP BY user_id) UNION DIST ("
                 + doctor_patient_sql + ")";
         String main_query = "(SELECT c.*  FROM patient c INNER JOIN ( "
@@ -148,16 +147,13 @@ public class JdbcPatientRepository {
         patients.addAll(this.jdbcTemplate.query(main_query,
                 ParameterizedBeanPropertyRowMapper.newInstance(Patient.class)));
         
-        // Populate list of doctors for a patient.
-        for (Patient patient : patients) getDoctorsForPatient(patient);
-        
         return patients;
     }
 	
-    public Collection<Patient> findAllPatientsForStaff(User user) {
+    public Collection<Patient> findAllPatientsForStaff(String user_id) {
         List<Patient> patients = new ArrayList<Patient>();
         String user_doct_sql = "SELECT doctor_account FROM user_doct WHERE user_id = '"
-                + user.getUserId() + "'";
+                + user_id + "'";
         String max_rev_sql = "SELECT user_id, max(version_number) AS maxrev FROM patient where doctor_account in ("
                 + user_doct_sql + ") GROUP BY user_id";
         String main_query = "SELECT c.*  FROM patient c INNER JOIN ( "
@@ -167,9 +163,6 @@ public class JdbcPatientRepository {
         
         patients.addAll(this.jdbcTemplate.query(main_query,
                 ParameterizedBeanPropertyRowMapper.newInstance(Patient.class)));
-        
-        // Populate list of doctors for a patient.
-        for (Patient patient : patients) getDoctorsForPatient(patient);
         
         return patients;
     }
