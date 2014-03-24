@@ -74,7 +74,7 @@ public class JdbcPatientRepository {
 	 * {@link Pet Pets} and {@link Visit Visits} for the corresponding owner, if
 	 * not already loaded.
 	 */
-	public Patient findPatientById(String id) throws DataAccessException {
+	public Patient findByKey(String id) throws DataAccessException {
 		Patient patient;
 		try {
 			Map<String, Object> params = new HashMap<String, Object>();

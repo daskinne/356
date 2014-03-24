@@ -30,12 +30,12 @@ public class UserService {
 
 	@Transactional(readOnly = true)
 	public User findUserById(int id) {
-		return userRepository.findById(id);
+		return userRepository.findByKey(id);
 	}
 
 	@Transactional(readOnly = true)
 	public Patient findPatientById(String id) {
-		return patientRepository.findPatientById(id);
+		return patientRepository.findByKey(id);
 	}
 
 	@Transactional(readOnly = true)
@@ -46,7 +46,7 @@ public class UserService {
 	}
 	
 	public userType getType(User user){
-		if(doctorRepository.findById(user.getUserId()) != null){
+		if(doctorRepository.findByKey(user.getUserId()) != null){
 			return userType.DOCTOR;
 		}else if(patientRepository.findPatientById(user.getUserId()) != null){
 			return userType.PATIENT;

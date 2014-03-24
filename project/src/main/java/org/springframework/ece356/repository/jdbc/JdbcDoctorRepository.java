@@ -45,7 +45,7 @@ public class JdbcDoctorRepository {
     }
 
 
-    public Doctor findById(String id) throws DataAccessException {
+    public Doctor findByKey(String id) throws DataAccessException {
         Doctor user;
         try {
             Map<String, Object> params = new HashMap<String, Object>();
@@ -116,7 +116,7 @@ public class JdbcDoctorRepository {
     
     public void save(Doctor doctor) throws DataAccessException {
         BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(doctor);
-        if (this.findById(doctor.getUserId()) == null) {
+        if (this.findByKey(doctor.getUserId()) == null) {
         	addDoctor(doctor);
         	//TODO: not implemented, manual adding of doctors from User
         } else {
