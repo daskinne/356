@@ -48,13 +48,13 @@ public class UserService {
 	public userType getType(User user){
 		if(doctorRepository.findById(user.getUserId()) != null){
 			return userType.DOCTOR;
+		}else if(patientRepository.findPatientById(user.getUserId()) != null){
+			return userType.PATIENT;
+		}else if(user.getIsOfficer()){
+			return userType.ADMIN;
+		}else{
+			return userType.STAFF;
 		}
-		//TODO: check Patient table to see if patient
-//		return userType.DOCTOR;
-//		//TODO: check Staff table to see if staff
-//		return userType.STAFF;
-//		//else is admin
-		return userType.ADMIN;
 	}
 	
     @Transactional(readOnly = true)

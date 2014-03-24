@@ -48,8 +48,6 @@ public class PatientController {
     	}
         // Here we are returning an object of type 'Vets' rather than a collection of Vet objects 
         // so it is simpler for Object-Xml mapping
-        Vets vets = new Vets();
-        //vets.getVetList().addAll(this.clinicService.findVets());
         Patients patients = new Patients();
         patients.getPatientList().addAll(this.userService.getPatients((User) model.get("user")));
         model.put("patients", patients);
