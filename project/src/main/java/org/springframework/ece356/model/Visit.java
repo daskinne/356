@@ -23,6 +23,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 import org.springframework.core.style.ToStringCreator;
 
+import com.sun.istack.Nullable;
+
 /**
  * Simple JavaBean domain object representing a user.
  */
@@ -30,6 +32,10 @@ import org.springframework.core.style.ToStringCreator;
 @Table(name = "visit")
 public class Visit {
 	
+    // Fill this out in service
+    @Nullable
+    private Treatment treatment;
+    
     @Column(name = "appointment_patient_account")
     @NotEmpty
     private String appointment_patient_account;

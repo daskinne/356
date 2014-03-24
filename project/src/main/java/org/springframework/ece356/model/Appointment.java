@@ -23,13 +23,19 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 import org.springframework.core.style.ToStringCreator;
 
+import com.sun.istack.Nullable;
+
 /**
  * Simple JavaBean domain object representing a user.
  */
 @Entity
 @Table(name = "appointment")
 public class Appointment {
-	
+    
+    // Fill the out in service.
+    @Nullable
+    private Visit visit;
+    
     @Column(name = "patient_account")
     @NotEmpty
     private String patient_account;

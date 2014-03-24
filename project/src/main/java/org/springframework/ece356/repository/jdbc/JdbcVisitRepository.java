@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.ece356.model.Appointment;
+import org.springframework.ece356.model.Treatment;
 import org.springframework.ece356.model.Visit;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -27,11 +28,11 @@ public class JdbcVisitRepository {
 
     private JdbcTemplate jdbcTemplate;
     
-    private JdbcAppointmentRepository appointmentRepo;
+    private JdbcTreatmentRepository treatmentRepo;
     
     @Autowired
     public JdbcVisitRepository(DataSource dataSource, NamedParameterJdbcTemplate namedParameterJdbcTemplate,
-            JdbcAppointmentRepository appointmentRepo) {
+            JdbcTreatmentRepository treatmentRepo) {
     	this.jdbcTemplate = new JdbcTemplate(dataSource);
         this.insertUser = new SimpleJdbcInsert(dataSource)
                 .withTableName("user")
@@ -39,11 +40,12 @@ public class JdbcVisitRepository {
 
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         
-        this.appointmentRepo = appointmentRepo;
+        this.treatmentRepo = treatmentRepo;
     }
     
-    public Appointment findAppointmentForVisit(Visit visit) {
-        return appointmentRepo.findByKey(
+    // TODO: Move this to service layer?
+    public Treatment findTreatmentForVisit(Visit visit) {
+        return treatmentRepo.findByKey(
                 visit.getAppointmentPatientAccount(),
                 visit.getAppointmentPatientVersionNumber(),
                 visit.getAppointmentVersionNumber(),
