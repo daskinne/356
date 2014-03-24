@@ -10,6 +10,9 @@
 		<ul class="nav">
 			<c:if test="${!empty sessionScope.user }">
 				<li style="margin: 10px;">User: ${sessionScope.user.userId}</li>
+				<c:if test="${sessionScope.user.type == 'PATIENT' }">
+				<li style="margin: 10px;"><a href="patient">Profile</a></li>
+				</c:if>
 			</c:if>
 			<li style="width: 100px;"><a
 				href="<spring:url value="/" htmlEscape="true" />"><i
