@@ -1,5 +1,7 @@
 package org.springframework.ece356.model;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -13,10 +15,21 @@ import org.springframework.core.style.ToStringCreator;
 @Entity
 @Table(name = "doctor")
 public class Doctor {
+    
+    // TODO fill this out in services
+    private Set<Doctor> patients;
+    // TODO fill this out in services
+    private Set<Appointment> appointments;
+    
 	@Column(name = "user_id")
 	@NotEmpty
 	private String user_id;
 
+    @Column(name = "pay_rate")
+    @NotEmpty
+    private float pay_rate;
+
+	
 	public String getUserId() {
 		return user_id;
 	}
@@ -32,9 +45,4 @@ public class Doctor {
 	public void setPayRate(float pay_rate) {
 		this.pay_rate = pay_rate;
 	}
-
-	@Column(name = "pay_rate")
-	@NotEmpty
-	private float pay_rate;
-
 }

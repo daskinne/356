@@ -15,7 +15,9 @@ import org.springframework.core.style.ToStringCreator;
 @Entity
 @Table(name = "patient")
 public class Patient {
-	
+
+    private Set<Doctor> assigned_doctors;
+    
     @Column(name = "user_id")
     @NotEmpty
     private String user_id;
@@ -59,8 +61,6 @@ public class Patient {
 	public void setAssignedDoctors(Set<Doctor> assigned_doctors) {
 		this.assigned_doctors = assigned_doctors;
 	}
-
-	private Set<Doctor> assigned_doctors;
 
     public String getUserId() {
         return this.user_id;

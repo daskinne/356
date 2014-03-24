@@ -9,7 +9,6 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.ece356.model.Appointment;
 import org.springframework.ece356.model.Treatment;
 import org.springframework.ece356.model.Visit;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -28,28 +27,14 @@ public class JdbcTreatmentRepository {
 
     private JdbcTemplate jdbcTemplate;
     
-    private JdbcVisitRepository visitRepo;
-    
     @Autowired
-    public JdbcTreatmentRepository(DataSource dataSource, NamedParameterJdbcTemplate namedParameterJdbcTemplate,
-            JdbcVisitRepository visitRepo) {
+    public JdbcTreatmentRepository(DataSource dataSource, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
     	this.jdbcTemplate = new JdbcTemplate(dataSource);
         this.insertUser = new SimpleJdbcInsert(dataSource)
                 .withTableName("user")
                 .usingGeneratedKeyColumns("user_id");
 
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-        
-        this.visitRepo = visitRepo;
-    }
-    
-    // TODO: Move this to service layer?
-    public Visit findAppointmentForVisit(Treatment treatment) {
-        return visitRepo.findByKey(
-                treatment.getVisitAppointmentPatientAccount(),
-                treatment.getVisitAppointmentPatientVersionNumber(),
-                treatment.getVisitAppointmentVersionNumber(),
-                treatment.getVisitAppointmentStartTime());
     }
     
     public Treatment findByKey(String visit_appointment_patient_account, int visit_appointment_patient_version_number, 
