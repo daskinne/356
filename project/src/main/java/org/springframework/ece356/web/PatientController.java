@@ -61,7 +61,7 @@ public class PatientController {
 		if(model.get("user") == null){
     		return "redirect:/login";
     	}
-		Patient patient = this.userService.findPatientById(((User) model.get("user")).getUserId());
+		Patient patient = this.userService.findLatestPatientRevisionById(((User) model.get("user")).getUserId());
 		model.put("patient", patient);
 		return "patient";
 	}
@@ -71,7 +71,7 @@ public class PatientController {
 		if(model.get("user") == null){
     		return "redirect:/login";
     	}
-		Patient patient = this.userService.findPatientById(patientId);
+		Patient patient = this.userService.findLatestPatientRevisionById(patientId);
 		model.put("patient", patient);
 		return "patient";
 	}
