@@ -15,8 +15,6 @@
  */
 package org.springframework.ece356.repository.jdbc;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -30,20 +28,17 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.ece356.model.Doctor;
+import org.springframework.ece356.model.Patient;
+import org.springframework.ece356.model.Pet;
+import org.springframework.ece356.model.User;
+import org.springframework.ece356.model.Visit;
+import org.springframework.ece356.repository.VisitRepository;
+import org.springframework.ece356.util.userType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.ece356.model.Doctor;
-import org.springframework.ece356.model.Patient;
-import org.springframework.ece356.model.Specialty;
-import org.springframework.ece356.model.User;
-import org.springframework.ece356.model.Vet;
-import org.springframework.ece356.model.Visit;
-import org.springframework.ece356.repository.VisitRepository;
-import org.springframework.ece356.util.EntityUtils;
-import org.springframework.ece356.util.userType;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -70,12 +65,33 @@ public class JdbcPatientRepository {
 				dataSource);
 	}
 
+    public Patient findByKey(String user_id, int version_number) throws DataAccessException {
+        Patient user;
+        try {
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("user_id", user_id);
+            params.put("version_number", version_number);
+            user = this.namedParameterJdbcTemplate.queryForObject(
+                    "SELECT * FROM patient WHERE "
+                    + "user_id=:user_id, "
+                    + "version_number=:version_number",
+                    params,
+                    ParameterizedBeanPropertyRowMapper.newInstance(Patient.class)
+            );
+        } catch (EmptyResultDataAccessException ex) {
+            return null;
+//            throw new ObjectRetrievalFailureException(User.class, id);
+        }
+        return user;
+    }
+
+	
 	/**
 	 * Loads the {@link User} with the supplied <code>id</code>; also loads the
 	 * {@link Pet Pets} and {@link Visit Visits} for the corresponding owner, if
 	 * not already loaded.
 	 */
-	public Patient findByKey(String id) throws DataAccessException {
+	public Patient findLatestRevision(String id) throws DataAccessException {
 		Patient patient;
 		try {
 			Map<String, Object> params = new HashMap<String, Object>();
