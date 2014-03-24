@@ -80,12 +80,19 @@ public class JdbcPatientRepository {
 		try {
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("id", id);
+			
+			String max_rev_sql = "(SELECT version_number "
+									+ "FROM patient "
+									+ "WHERE patient.user_id=:id)";
 			patient = this.namedParameterJdbcTemplate
 					.queryForObject(
-							"SELECT a.* FROM patient as a, (SELECT user_id, max(version_number) AS maxrev FROM patient WHERE user_id = :id GROUP BY user_id)"
-									+ " as b where a.user_id = b.user_id and a.version_number = b.maxrev ",
+							"SELECT * "
+									+ "FROM user,patient"
+									+ " WHERE patient.user_id=:id AND user.user_id=patient.user_id" 
+									+ " AND version_number >= all" + max_rev_sql,
 							params, ParameterizedBeanPropertyRowMapper
 									.newInstance(Patient.class));
+			
 		} catch (EmptyResultDataAccessException ex) {
 			return null;
 			// throw new ObjectRetrievalFailureException(User.class, id);
