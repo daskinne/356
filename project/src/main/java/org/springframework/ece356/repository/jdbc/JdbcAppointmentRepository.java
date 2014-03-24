@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.ece356.model.Appointment;
-import org.springframework.ece356.model.Visit;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -36,42 +35,20 @@ public class JdbcAppointmentRepository {
 
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
-
-    public Visit getVisitForAppointment(Appointment appointment) {
-    	Visit visit;
-        try {
-        	BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(appointment);
-            visit = this.namedParameterJdbcTemplate.queryForObject(
-                    "SELECT * FROM visit WHERE "
-                    + "appointment_patient_account=:patient_account, "
-                    + "appointment_patient_version_number=:patient_version_number"
-                    + "appointment_version_number=:version_number"
-                    + "appointment_start_time=:start_time, ",
-                    parameterSource,
-                    ParameterizedBeanPropertyRowMapper.newInstance(Visit.class)
-            );
-        } catch (EmptyResultDataAccessException ex) {
-        	return null;
-//            throw new ObjectRetrievalFailureException(User.class, id);
-        }
-        return visit;
-    }
     
     public Appointment findByKey(String patient_account, int patient_version_number, 
-    		String doctor_account, int version_number, DateTime start_time) throws DataAccessException {
+    		int version_number, DateTime start_time) throws DataAccessException {
     	Appointment user;
         try {
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("patient_account", patient_account);
             params.put("patient_version_number", patient_version_number);
-            params.put("doctor_account", doctor_account);
             params.put("version_number", version_number);
             params.put("start_time", start_time);
             user = this.namedParameterJdbcTemplate.queryForObject(
                     "SELECT * FROM appointment WHERE "
                     + "patient_account=:patient_account, "
                     + "patient_version_number=:patient_version_number"
-                    + "doctor_account=:doctor_account, "
                     + "version_number=:version_number"
                     + "start_time=:start_time, ",
                     params,
