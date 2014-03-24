@@ -24,13 +24,13 @@ import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 
 /**
  * {@link ParameterizedRowMapper} implementation mapping data from a {@link ResultSet} to the corresponding properties
- * of the {@link JdbcPet} class.
+ * of the {@link ZJdbcPet} class.
  */
-class JdbcPetRowMapper implements ParameterizedRowMapper<JdbcPet> {
+class ZJdbcPetRowMapper implements ParameterizedRowMapper<ZJdbcPet> {
 
     @Override
-    public JdbcPet mapRow(ResultSet rs, int rownum) throws SQLException {
-        JdbcPet pet = new JdbcPet();
+    public ZJdbcPet mapRow(ResultSet rs, int rownum) throws SQLException {
+        ZJdbcPet pet = new ZJdbcPet();
         pet.setId(rs.getInt("id"));
         pet.setName(rs.getString("name"));
         Date birthDate = rs.getDate("birth_date");

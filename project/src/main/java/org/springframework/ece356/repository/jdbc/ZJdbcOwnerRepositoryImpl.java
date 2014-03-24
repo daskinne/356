@@ -50,7 +50,7 @@ import org.springframework.stereotype.Repository;
  * @author Mark Fisher
  */
 @Repository
-public class JdbcOwnerRepositoryImpl implements OwnerRepository {
+public class ZJdbcOwnerRepositoryImpl implements OwnerRepository {
 
     private VisitRepository visitRepository;
 
@@ -59,7 +59,7 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
     private SimpleJdbcInsert insertOwner;
 
     @Autowired
-    public JdbcOwnerRepositoryImpl(DataSource dataSource, NamedParameterJdbcTemplate namedParameterJdbcTemplate,
+    public ZJdbcOwnerRepositoryImpl(DataSource dataSource, NamedParameterJdbcTemplate namedParameterJdbcTemplate,
                                    VisitRepository visitRepository) {
 
         this.insertOwner = new SimpleJdbcInsert(dataSource)
@@ -115,12 +115,12 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
     public void loadPetsAndVisits(final Owner owner) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("id", owner.getId().intValue());
-        final List<JdbcPet> pets = this.namedParameterJdbcTemplate.query(
+        final List<ZJdbcPet> pets = this.namedParameterJdbcTemplate.query(
                 "SELECT id, name, birth_date, type_id, owner_id FROM pets WHERE owner_id=:id",
                 params,
-                new JdbcPetRowMapper()
+                new ZJdbcPetRowMapper()
         );
-        for (JdbcPet pet : pets) {
+        for (ZJdbcPet pet : pets) {
             owner.addPet(pet);
             pet.setType(EntityUtils.getById(getPetTypes(), PetType.class, pet.getTypeId()));
             List<VisitOld> visits = this.visitRepository.findByPetId(pet.getId());

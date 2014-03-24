@@ -24,7 +24,7 @@ import org.springframework.ece356.model.Pet;
  * @author Juergen Hoeller
  * @see JdbcClinicImpl
  */
-class JdbcPet extends Pet {
+class ZJdbcPet extends Pet {
 
     private int typeId;
 
