@@ -8,29 +8,28 @@
 <div class="navbar">
 	<div class="navbar-inner">
 		<ul class="nav">
-			<c:if test="${!empty sessionScope.user }">
-				<li style="margin: 10px;">User: ${sessionScope.user.userId}</li>
-				<c:if test="${sessionScope.user.type == 'PATIENT' }">
-				<li style="margin: 10px;"><a href="patient">Profile</a></li>
-				</c:if>
+			<c:if test="${empty sessionScope.user }">
+				<li style="margin: 10px;"><a href="<spring:url value="/login" htmlEscape="true" />">
+						Login</a></li>
 			</c:if>
-			<li style="width: 100px;"><a
+			<c:if test="${!empty sessionScope.user }">
+				<li style="margin: 20px;">User: ${sessionScope.user.userId}</li>
+				<c:if test="${sessionScope.user.type == 'PATIENT' }">
+					<li style="margin: 10px;"><a href="patient">Profile</a></li>
+				</c:if>
+				<c:if test="${sessionScope.user.type != 'PATIENT' }">
+					<li style="margin: 10px;"><a
+						href="<spring:url value="/patients" htmlEscape="true" />"><i
+							class="icon-search"></i>Patients</a></li>
+				</c:if>
+				<li style="margin: 10px;"><a
+					href="<spring:url value="/logout" htmlEscape="true" />"> Logout</a></li>
+			</c:if>
+			<li style="margin: 10px;"><a
 				href="<spring:url value="/" htmlEscape="true" />"><i
 					class="icon-home"></i> Home</a></li>
-			<li style="width: 130px;"><a
-				href="<spring:url value="/patients" htmlEscape="true" />"><i
-					class="icon-search"></i>Patients</a></li>
-			<li style="width: 140px;"><a
-				href="<spring:url value="/vets.html" htmlEscape="true" />"><i
-					class="icon-th-list"></i> Veterinarians</a></li>
-			<li style="width: 90px;"><a
-				href="<spring:url value="/oups.html" htmlEscape="true" />"
-				title="trigger a RuntimeException to see how it is handled"><i
-					class="icon-warning-sign"></i> Error</a></li>
-			<li><a href="<spring:url value="/login" htmlEscape="true" />">
-					Login</a></li>
-			<li><a href="<spring:url value="/logout" htmlEscape="true" />">
-					Logout</a></li>
+
+
 		</ul>
 	</div>
 </div>
