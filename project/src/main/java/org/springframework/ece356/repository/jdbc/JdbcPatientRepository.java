@@ -43,6 +43,7 @@ import org.springframework.ece356.model.Vet;
 import org.springframework.ece356.model.Visit;
 import org.springframework.ece356.repository.VisitRepository;
 import org.springframework.ece356.util.EntityUtils;
+import org.springframework.ece356.util.userType;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -91,37 +92,77 @@ public class JdbcPatientRepository {
 		}
 		return patient;
 	}
-	
-	public Collection<Patient> findAllPatients(User user){
-		//TODO: change this to use User limited listing
 
-        List<Patient> patients = new ArrayList<Patient>();
-        // Retrieve the list of all vets.
-        String max_rev_sql = "SELECT user_id, max(version_number) AS maxrev FROM patient GROUP BY user_id";
-        patients.addAll(this.jdbcTemplate.query(
-                "SELECT c.*  FROM patient c INNER JOIN ( "+ max_rev_sql+" ) b "
-                + "ON c.user_id=b.user_id AND c.version_number=b.maxrev",
-                ParameterizedBeanPropertyRowMapper.newInstance(Patient.class)));
+	public Collection<Patient> findAllPatients(User user) {
+		// TODO: change this to use User limited listing
 
-        // Retrieve the list of all possible specialties.
-//        final List<Doctor> doctors = this.jdbcTemplate.query(
-//                "SELECT doctor_account as user_id FROM pati_doct WHERE patient_account = ? and patient_version_number = ?",
-//                ParameterizedBeanPropertyRowMapper.newInstance(Doctor.class));
+		List<Patient> patients = new ArrayList<Patient>();
+		// Retrieve the list of all latest patients
+		String max_rev_sql = "SELECT user_id, max(version_number) AS maxrev FROM patient GROUP BY user_id";
+		String main_query = "SELECT c.*  FROM patient c INNER JOIN ( "
+				+ max_rev_sql + " ) b "
+				+ "ON c.user_id=b.user_id AND c.version_number=b.maxrev";
 
-        // Build each vet's list of specialties.
-        for (Patient patient : patients) {
-            final List<Doctor> secondary_doctors = this.jdbcTemplate.query(
-                    "SELECT doctor_account as user_id FROM pati_doct WHERE patient_account = ? and patient_version_number = ?",
-                    ParameterizedBeanPropertyRowMapper.newInstance(Doctor.class),
-                    patient.getUserId(), patient.getVersionNumber());
-            Set<Doctor> docs_set = new HashSet<Doctor>();
-            Doctor primary_doctor = new Doctor();
-            primary_doctor.setUserId(patient.getDoctorAccount());
-            docs_set.add(primary_doctor);
-            docs_set.addAll(secondary_doctors);
-            patient.setAssignedDoctors(docs_set);
-        }
-        return patients;
-    }
+		if (user.getType() == userType.DOCTOR) {
+			String doctor_patient_sql = "SELECT patient_account, patient_version_number FROM pati_doct WHERE doctor_account = '"
+					+ user.getUserId() + "'";
+			max_rev_sql = "(SELECT user_id, max(version_number) AS maxrev FROM patient where doctor_account = '"
+					+ user.getUserId()
+					+ "' GROUP BY user_id) UNION DIST ("
+					+ doctor_patient_sql + ")";
+			main_query = "(SELECT c.*  FROM patient c INNER JOIN ( "
+					+ max_rev_sql
+					+ " ) b "
+					+ "ON c.user_id=b.user_id AND c.version_number=b.maxrev) UNION DISTINCT ("
+					+ doctor_patient_sql + ")";
+		} else if (user.getType() == userType.STAFF) {
+			/*
+			 * Get doctor list for staff member, then look up all the patients
+			 * for these doctors
+			 */
+			String user_doct_sql = "SELECT doctor_account FROM user_doct WHERE user_id = '"
+					+ user.getUserId() + "'";
+			max_rev_sql = "SELECT user_id, max(version_number) AS maxrev FROM patient where doctor_account in ("
+					+ user_doct_sql + ") GROUP BY user_id";
+			main_query = "SELECT c.*  FROM patient c INNER JOIN ( "
+					+ max_rev_sql + " ) b "
+					+ "ON c.user_id=b.user_id AND c.version_number=b.maxrev";
+			System.out.println(main_query);
+		} else if (user.getType() == userType.ADMIN) {
+			/*
+			 * Not authorized to view patient list directly, must call this
+			 * function with a Doctor user to inspect aggregate data
+			 */
+			return patients;
+		} else {
+			/*
+			 * Not authorized to view patients
+			 */
+			return patients;
+		}
 
+		patients.addAll(this.jdbcTemplate.query(main_query,
+				ParameterizedBeanPropertyRowMapper.newInstance(Patient.class)));
+
+		// Retrieve the list of all possible specialties.
+		// final List<Doctor> doctors = this.jdbcTemplate.query(
+		// "SELECT doctor_account as user_id FROM pati_doct WHERE patient_account = ? and patient_version_number = ?",
+		// ParameterizedBeanPropertyRowMapper.newInstance(Doctor.class));
+
+		// Build each vet's list of specialties.
+		for (Patient patient : patients) {
+			final List<Doctor> secondary_doctors = this.jdbcTemplate
+					.query("SELECT doctor_account as user_id FROM pati_doct WHERE patient_account = ? and patient_version_number = ?",
+							ParameterizedBeanPropertyRowMapper
+									.newInstance(Doctor.class), patient
+									.getUserId(), patient.getVersionNumber());
+			Set<Doctor> docs_set = new HashSet<Doctor>();
+			Doctor primary_doctor = new Doctor();
+			primary_doctor.setUserId(patient.getDoctorAccount());
+			docs_set.add(primary_doctor);
+			docs_set.addAll(secondary_doctors);
+			patient.setAssignedDoctors(docs_set);
+		}
+		return patients;
+	}
 }
