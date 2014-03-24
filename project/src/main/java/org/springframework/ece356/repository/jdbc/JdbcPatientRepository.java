@@ -81,9 +81,8 @@ public class JdbcPatientRepository {
 			params.put("id", id);
 			patient = this.namedParameterJdbcTemplate
 					.queryForObject(
-							"SELECT * "
-									+ "FROM user,patient"
-									+ " WHERE patient.user_id= :id AND user.user_id=patient.user_id",
+							"SELECT a.* FROM patient as a, (SELECT user_id, max(version_number) AS maxrev FROM patient WHERE user_id = :id GROUP BY user_id)"
+									+ " as b where a.user_id = b.user_id and a.version_number = b.maxrev ",
 							params, ParameterizedBeanPropertyRowMapper
 									.newInstance(Patient.class));
 		} catch (EmptyResultDataAccessException ex) {
