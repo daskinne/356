@@ -76,22 +76,6 @@ public class JdbcDoctorRepository {
                 user_id);
         return prescriptions;
     }
-//TODO: Move to Patient Model ability to filter Patient list and search based on Doctor
-//    public List<Patient> validPrescriptions(String user_id) {
-//        final List<Patient> prescriptions = this.jdbcTemplate.query(
-//                "SELECT legal_prescription_medication as medication FROM doct_lega WHERE doctor_user= ?",
-//                new ParameterizedRowMapper<Prescription>() {
-//                    @Override
-//                    public Prescription mapRow(ResultSet rs, int row) throws SQLException {
-//                        Prescription p = new Prescription();
-//                        p.setMedication(rs.getInt("medication"));
-//                        return p;
-//                    }
-//                },
-//                user_id);
-//        return prescriptions;
-//    }
-
 
     //TODO: add doctor to patient
 //	public void addDoctorPatient(Doctor doctor, Patient patient) throws DataAccessException {

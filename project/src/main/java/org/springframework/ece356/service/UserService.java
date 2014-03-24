@@ -1,6 +1,8 @@
 package org.springframework.ece356.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -62,15 +64,15 @@ public class UserService {
     	//TODO: add user access logic
     	switch(user.getType()){
     	case DOCTOR:
-    		break;
+    	    return patientRepository.findAllPatientsForDoctor(user);
     	case PATIENT:
-    		break;
+    	    return new ArrayList<Patient>();
     	case STAFF:
-    		break;
+    	    return patientRepository.findAllPatientsForStaff(user);
     	case ADMIN:
-    		break;
+            return new ArrayList<Patient>();
     	}
-        return patientRepository.findAllPatients(user);
+        return new ArrayList<Patient>();
     }
 	
 //	public Set<Visit> doctorVisits(User user){
