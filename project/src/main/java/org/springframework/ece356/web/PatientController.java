@@ -20,6 +20,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ece356.model.Patient;
 import org.springframework.ece356.model.Patients;
+import org.springframework.ece356.model.Pet;
 import org.springframework.ece356.model.User;
 import org.springframework.ece356.model.Vets;
 import org.springframework.ece356.service.ClinicService;
@@ -27,10 +28,13 @@ import org.springframework.ece356.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 @Controller
 @SessionAttributes("user")
@@ -66,9 +70,21 @@ public class PatientController {
 		return "patient";
 	}
 	
+	@RequestMapping(value = "/patient", method = RequestMethod.PUT)
+	public String updatePatient(@ModelAttribute("patient") Patient patient, BindingResult result, Map<String, Object> model) {
+		if (result.hasErrors()) {
+            return "/patient";
+            // TODO: Error
+        } else {
+        	this.userService.savePatient(patient);
+        	model.put("updateSuccess", 1);
+            return "/patient";
+        }
+	}
+	
 	@RequestMapping(value = "/patient/{patientId}/profile", method = RequestMethod.GET)
     public String displayPatientLookup(@PathVariable("patientId") String patientId, Map<String, Object> model) {
-		if(model.get("user") == null){
+		if(model.get("user") == null) {
     		return "redirect:/login";
     	}
 		Patient patient = this.userService.findLatestPatientRevisionById(patientId);

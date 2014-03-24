@@ -27,21 +27,10 @@
     </h2>
 
     <form:form modelAttribute="patient" method="${method}" class="form-horizontal">
-        <p>
-            <label class="control-label">Owner: </label>
-            <c:out value="${patient.userId}"/>
-        </p>
-        
-        <p>
-            <label class="control-label">Assigned Doctor: </label> 
-            <c:out value="${patient.doctorAccount}"/>
-       	</p>
-        
-        <p>
-            <label class="control-label">Current Health: </label> 
-            <c:out value="${patient.currentHealth}"/>
-        </p>
-        
+        <petclinic:inputField readonly="true" label="Record ID" name="versionNumber"/>
+        <petclinic:inputField readonly="true" label="User ID" name="userId"/>
+        <petclinic:inputField readonly="true" label="Assigned Doctor" name="doctorAccount"/>
+        <petclinic:inputField readonly="true" label="Current Health" name="currentHealth"/>
         <petclinic:inputField label="Phone Number" name="phoneNumber"/>
         <petclinic:inputField label="Health Card" name="healthCard"/>
         <petclinic:inputField label="SIN Number" name="sin"/>
@@ -52,12 +41,15 @@
                     <button type="submit">Add Patient</button>
                 </c:when>
                 <c:otherwise>
-                    <button type="submit">Update Patient</button>
+                    <button type="submit">Update</button>
                 </c:otherwise>
             </c:choose>
         </div>
     </form:form>
     
+    <h2>
+        <c:if test="${updateSuccess==1}">Successfully updated! </c:if>
+    </h2>
     
 	<jsp:include page="fragments/footer.jsp" />
 </div>

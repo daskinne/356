@@ -23,11 +23,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.sql.DataSource;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
+import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.ece356.model.Doctor;
 import org.springframework.ece356.model.Patient;
 import org.springframework.ece356.model.Pet;
@@ -63,6 +71,22 @@ public class JdbcPatientRepository {
 
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
 				dataSource);
+	}
+	
+	public void savePatient(Patient patient) {
+		patient.setVersionNumber(patient.getVersionNumber() + 1);
+		BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(patient);
+		try {
+			this.namedParameterJdbcTemplate.update(
+                    "INSERT INTO patient "
+					+ "(user_id, version_number, phone_number, health_card, sin, address, current_health, doctor_account) values "
+                    + "(:userId, :versionNumber, :phoneNumber, :healthCard, :sin, :address, :currentHealth, :doctorAccount)",
+                    parameterSource);
+		} catch (EmptyResultDataAccessException ex) {
+			// TODO: handle this
+			System.out.println("Got an exception at savePatient()!");
+			// throw new ObjectRetrievalFailureException(User.class, id);
+		}
 	}
 
     public Patient findByKey(String user_id, int version_number) throws DataAccessException {
