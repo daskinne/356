@@ -69,9 +69,10 @@ public class JdbcPatientRepository {
 		BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(patient);
 		try {
 			this.namedParameterJdbcTemplate.update(
-                    "INSERT INTO patient "
-					+ "(user_id, phone_number, health_card, sin, address, current_health, doctor_account) values "
-                    + "(:userId, :phoneNumber, :healthCard, :sin, :address, :currentHealth, :doctorAccount)",
+					"UPDATE patient SET "
+					+ "phone_number=:phoneNumber, health_card=:healthCard, sin=:sin, " 
+					+ "address=:address, current_health=:currentHealth, doctor_account=:doctorAccount "
+					+ "WHERE user_id=:userId",
                     parameterSource);
 		} catch (EmptyResultDataAccessException ex) {
 			// TODO: handle this
@@ -87,7 +88,7 @@ public class JdbcPatientRepository {
             params.put("user_id", user_id);
             user = this.namedParameterJdbcTemplate.queryForObject(
                     "SELECT * FROM patient WHERE "
-                    + "user_id=:user_id, ",
+                    + "user_id=:user_id",
                     params,
                     ParameterizedBeanPropertyRowMapper.newInstance(Patient.class)
             );
