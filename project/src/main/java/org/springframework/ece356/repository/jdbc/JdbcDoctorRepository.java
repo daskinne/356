@@ -119,13 +119,13 @@ public class JdbcDoctorRepository {
     // TODO:
     public Collection<Appointment> findAllAppointmentsForDoctor(String user_id) {
 //        List<Appointment> appointments = new ArrayList<Appointment>();
-//        String appointment_sql = "SELECT patient_account, patient_version_number, doctor_account, version_number, start_time FROM appointment WHERE doctor_account = '"
+//        String appointment_sql = "SELECT patient_account, doctor_account, version_number, start_time FROM appointment WHERE doctor_account = '"
 //                + user_id + "'";
 //        String max_rev_sql = "(SELECT "
-//                + "patient_account, patient_version_number, doctor_account, max(version_number), start_time "
+//                + "patient_account, doctor_account, max(version_number), start_time "
 //                + "AS maxrev FROM patient where doctor_account = '"
 //                + user_id
-//                + "' GROUP BY patient_account, patient_version_number, doctor_account, start_time) UNION DISTINCT ("
+//                + "' GROUP BY patient_account, doctor_account, start_time) UNION DISTINCT ("
 //                + appointment_sql + ")";
 //        String main_query = "(SELECT c.*  FROM patient c INNER JOIN ( "
 //                + max_rev_sql

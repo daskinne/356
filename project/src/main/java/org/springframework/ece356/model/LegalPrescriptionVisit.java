@@ -34,10 +34,6 @@ public class LegalPrescriptionVisit {
     @NotEmpty
     private String visit_appointment_patient_account;
 
-    @Column(name = "visit_appointment_patient_version_number")
-    @NotEmpty
-    private int visit_appointment_patient_version_number;
-
     @Column(name = "visit_appointment_version_number")
     @NotEmpty
     private int visit_appointment_version_number;
@@ -66,14 +62,6 @@ public class LegalPrescriptionVisit {
         this.visit_appointment_patient_account = visit_appointment_patient_account;
     }
 
-    public int getVisitAppointmentPatientVersionNumber() {
-        return this.visit_appointment_patient_version_number;
-    }
-    
-    public void setVisitAppointmentPatientVersionNumber(int visit_appointment_patient_version_number) {
-        this.visit_appointment_patient_version_number = visit_appointment_patient_version_number;
-    }
-    
     public int getVisitAppointmentVersionNumber() {
         return this.visit_appointment_version_number;
     }

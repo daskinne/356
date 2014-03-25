@@ -20,16 +20,12 @@ INSERT IGNORE INTO doctor VALUES ('dan', 10000);
 -- 0 => Dead
 -- 1 => Sick
 -- 3 => Healthy
-INSERT INTO patient values ('pat',0,'4152002000','123456789012','123456789','Hospital Ave.',0,'daskinne');
-INSERT INTO patient values ('pat',1,'4152002001','000000000001','123456789','Hospital Ave.',0,'daskinne');
-INSERT INTO patient values ('pat',2,'4152002002','000000000002','123456789','Hospital Ave.',0,'daskinne');
-INSERT INTO patient values ('pat',3,'4152002003','000000000003','123456789','Hospital Ave.',0,'daskinne');
+INSERT IGNORE INTO patient values ('pat','4152002000','123456789012','123456789','Hospital Ave.',0,'daskinne');
 
-INSERT INTO patient values ('pete',0,'4152002003','000000000003','123456789','Hospital Ave.',0,'daskinne');
-INSERT INTO patient values ('pete',1,'4152002003','000000000003','123456789','Hospital Ave.',0,'dan');
+INSERT IGNORE INTO patient values ('pete','4152002003','000000000003','123456789','Hospital Ave.',0,'daskinne');
 
 -- Assign patient pat to Doctor Dan
-INSERT IGNORE INTO pati_doct VALUES ('dan','pat',0);
+INSERT IGNORE INTO pati_doct VALUES ('dan','pat');
 
 
 -- Create 3 Prescriptions
