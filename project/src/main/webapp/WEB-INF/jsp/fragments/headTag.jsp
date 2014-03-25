@@ -14,7 +14,10 @@ PetClinic :: a Spring Framework demonstration
 
     <spring:url value="/resources/css/petclinic.css" var="petclinicCss"/>
     <link href="${petclinicCss}" rel="stylesheet"/>
-
+    <spring:url value="/resources/jquery.datetimepicker.css" var="dtCSS"/>
+	<link rel="stylesheet" type="text/css" href="${dtCSS}" />
+	<spring:url value="/resources/jquery.datetimepicker.js" var="dtJS"/>
+	<script src="${dtJS}"></script>
     <spring:url value="/webjars/jquery/2.0.3/jquery.js" var="jQuery"/>
     <script src="${jQuery}"></script>
 
