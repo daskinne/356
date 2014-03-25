@@ -27,7 +27,6 @@
     </h2>
 
     <form:form modelAttribute="patient" method="${method}" class="form-horizontal">
-        <petclinic:inputField readonly="true" label="Record ID" name="versionNumber"/>
         <petclinic:inputField readonly="true" label="User ID" name="userId"/>
         <petclinic:inputField readonly="true" label="Assigned Doctor" name="doctorAccount"/>
         <petclinic:inputField readonly="true" label="Current Health" name="currentHealth"/>
