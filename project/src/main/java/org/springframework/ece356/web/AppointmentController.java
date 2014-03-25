@@ -41,33 +41,65 @@ import org.springframework.web.bind.support.SessionStatus;
 @SessionAttributes("user")
 public class AppointmentController {
 
-    private final UserService userService;
+	private final UserService userService;
 
-    @Autowired
-    public AppointmentController(UserService userService) {
-        this.userService = userService;
-    }
-    
-    @RequestMapping(value = "/patient/appointment", method = RequestMethod.PUT)
-    public String updatePatient(@ModelAttribute("appointment") Appointment appointment, BindingResult result, Map<String, Object> model) {
-    	if (result.hasErrors()) {
-            return "/patient";
-            // TODO: Error
-        } else {
-        	userService.newAppointment(appointment);
-        }
-        return "patient/appointment";
-    }
+	@Autowired
+	public AppointmentController(UserService userService) {
+		this.userService = userService;
+	}
 
+	@RequestMapping(value = "/patient/{patientId}/appointment/new", method = RequestMethod.POST)
+	public String newAppointment(@PathVariable("patientId") String patientId,
+			@ModelAttribute("appointment") Appointment appointment,
+			BindingResult result, Map<String, Object> model) {
+		// TODO: check patientId == appointmentPatientId
+		if (result.hasErrors()) {
+			return "patient/appointment";
+			// TODO: Error
+		}
+		userService.newAppointment(appointment);
+		model.put("updateSuccess", 1);
+		return "/patient";
+	}
 
-    @RequestMapping("/patient/{patientId}/appointments")
-    public String showAppointmentList(@PathVariable("patientId") String patientId, Map<String, Object> model) {
-    	
-    	userService.getAppointmentsForUser(patientId);
-        return "appointmentList";
-        
-    }
-    
-    
-	
+	@RequestMapping(value = "/patient/appointment", method = RequestMethod.PUT)
+	public String updateAppointment(
+			@ModelAttribute("appointment") Appointment appointment,
+			BindingResult result, Map<String, Object> model) {
+		// TODO: check patientId == appointmentPatientId
+		if (result.hasErrors()) {
+			return "patient/appointment";
+			// TODO: Error
+		}
+		userService.newAppointment(appointment);
+		model.put("updateSuccess", 1);
+		return "/patient";
+	}
+
+	@RequestMapping("/patient/{patientId}/appointment/new")
+	public String addAppointmentPatient(
+			@PathVariable("patientId") String patientId,
+			Map<String, Object> model) {
+		Appointment apt = new Appointment();
+		Patient pat = userService.findPatientById(patientId);
+		if (pat == null) {
+			return "redirect:login";
+		}
+		apt.setPatientAccount(patientId);
+		apt.setDoctorAccount(pat.getDoctorAccount());
+		model.put("appointment", apt);
+		return "patient/appointment";
+
+	}
+
+	@RequestMapping("/patient/{patientId}/appointments")
+	public String showAppointmentList(
+			@PathVariable("patientId") String patientId,
+			Map<String, Object> model) {
+
+		userService.getAppointmentsForUser(patientId);
+		return "appointmentList";
+
+	}
+
 }

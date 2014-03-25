@@ -15,10 +15,10 @@
 	});
 </script>
 <body>
-	<div class="container">
+	<div class="container">${appointment.startTime}
 		<jsp:include page="../fragments/bodyHeader.jsp" />
 		<c:choose>
-			<c:when test="${patient == null}">
+			<c:when test="${appointment.startTime == null}">
 				<c:set var="method" value="post" />
 			</c:when>
 			<c:otherwise>
@@ -27,8 +27,8 @@
 		</c:choose>
 
 		<h2>
-			<c:if test="${patient == null}">New </c:if>
-			Profile
+			<c:if test="${appointment.startTime == null}">New </c:if>
+			Appointment
 		</h2>
 
 		<form:form modelAttribute="appointment" method="${method}"
@@ -43,7 +43,7 @@
 			<petclinic:inputField label="End Time" name="endTime" />
 			<div class="form-actions">
 				<c:choose>
-					<c:when test="${patient == null}">
+					<c:when test="${appointment.startTime == null}">
 						<button type="submit">Add Appointment</button>
 					</c:when>
 					<c:otherwise>
@@ -56,7 +56,6 @@
 		<h2>
 			<c:if test="${updateSuccess==1}">Successfully updated!</c:if>
 		</h2>
-
 		<jsp:include page="../fragments/footer.jsp" />
 	</div>
 </body>

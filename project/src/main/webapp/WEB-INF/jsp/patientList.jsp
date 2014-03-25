@@ -25,7 +25,7 @@
 			<datatables:column title="Actions">
 				<a href="patient/${patient.userId}/visits/">View Visits</a>
 				<a href="patient/${patient.userId}/profile/">View Profile</a>
-				<a href="patient/${patient.userId}/visits/new">Add Visit</a>
+				<a href="patient/${patient.userId}/appointment/new">Add Appointment</a>
 			</datatables:column>
 			<datatables:column title="Assigned Doctors">
 				<c:forEach var="doctor" items="${patient.assignedDoctors}">
