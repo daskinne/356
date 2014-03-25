@@ -100,6 +100,9 @@ public class Appointment {
     @Override
     public String toString() {
         return new ToStringCreator(this)
-                .toString();
+        	.append("userid: ", this.getPatientAccount())
+        	.append("start_time: ", this.getStartTime())
+        	.append("version: ", this.getVersionNumber())
+        	.toString();
     }
 }

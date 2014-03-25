@@ -1,5 +1,6 @@
 package org.springframework.ece356.service;
 
+import java.awt.List;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -7,10 +8,12 @@ import java.util.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
+import org.springframework.ece356.model.Appointment;
 import org.springframework.ece356.model.Doctor;
 import org.springframework.ece356.model.Patient;
 import org.springframework.ece356.model.User;
 import org.springframework.ece356.model.Vet;
+import org.springframework.ece356.repository.jdbc.JdbcAppointmentRepository;
 import org.springframework.ece356.repository.jdbc.JdbcDoctorRepository;
 import org.springframework.ece356.repository.jdbc.JdbcPatientRepository;
 import org.springframework.ece356.repository.jdbc.JdbcUserRepository;
@@ -23,12 +26,14 @@ public class UserService {
 	private JdbcUserRepository userRepository;
 	private JdbcDoctorRepository doctorRepository;
 	private JdbcPatientRepository patientRepository;
+	private JdbcAppointmentRepository appointmentRepository;
 
 	@Autowired
-	public UserService(JdbcUserRepository userRepository, JdbcDoctorRepository doc, JdbcPatientRepository patient) {
+	public UserService(JdbcUserRepository userRepository, JdbcDoctorRepository doc, JdbcPatientRepository patient, JdbcAppointmentRepository appointmentRepository) {
 		this.userRepository = userRepository;
 		this.doctorRepository = doc;
 		this.patientRepository = patient;
+		this.appointmentRepository = appointmentRepository;
 	}
 
 	@Transactional(readOnly = true)
@@ -99,6 +104,18 @@ public class UserService {
     public void populateVisitsForDoctor(Doctor doctor) {
         doctor.appointments = doctorRepository.findAllAppointmentsForDoctor(doctor.getUserId());
     }
+    
+    @Transactional(readOnly = true)
+    public Collection<Appointment> getAppointmentsForUser(String patientId) {
+    	// TODO: Michael, get me this function,  
+    	return appointmentRepository.findLatestByKey(patientId);
+    }
+    
+    @Transactional
+    public void newAppointment(Appointment appointment) {
+    	appointmentRepository.addAppointment(appointment);
+    }
+    
     
 //	public Set<Visit> doctorVisits(User user){
 //		//TODO: verify user is doctor
