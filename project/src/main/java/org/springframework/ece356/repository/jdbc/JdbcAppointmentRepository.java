@@ -46,24 +46,20 @@ public class JdbcAppointmentRepository {
     public Visit findVisitForAppointment(Appointment appointment) {
         return visitRepo.findByKey(
                 appointment.getPatientAccount(),
-                appointment.getPatientVersionNumber(),
                 appointment.getVersionNumber(),
                 appointment.getStartTime());
     }
     
-    public Appointment findByKey(String patient_account, int patient_version_number, 
-    		int version_number, DateTime start_time) throws DataAccessException {
+    public Appointment findByKey(String patient_account, int version_number, DateTime start_time) throws DataAccessException {
     	Appointment user;
         try {
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("patient_account", patient_account);
-            params.put("patient_version_number", patient_version_number);
             params.put("version_number", version_number);
             params.put("start_time", start_time);
             user = this.namedParameterJdbcTemplate.queryForObject(
                     "SELECT * FROM appointment WHERE "
                     + "patient_account=:patient_account, "
-                    + "patient_version_number=:patient_version_number"
                     + "version_number=:version_number"
                     + "start_time=:start_time, ",
                     params,
@@ -79,8 +75,8 @@ public class JdbcAppointmentRepository {
     public void addAppointment(Appointment new_appointment){
     	BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(new_appointment);
     	this.namedParameterJdbcTemplate.update(
-                "INSERT INTO appointment (patient_account, patient_version_number, doctor_account, version_number, start_time, end_time) " +
-                "VALUES (:patient_account, :patient_version_number, :doctor_account, :version_number, :start_time, :end_time)",
+                "INSERT INTO appointment (patient_account, doctor_account, version_number, start_time, end_time) " +
+                "VALUES (:patient_account, :doctor_account, :version_number, :start_time, :end_time)",
                 parameterSource);
     }
 }

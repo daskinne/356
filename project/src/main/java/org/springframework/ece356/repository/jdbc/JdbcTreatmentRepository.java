@@ -37,19 +37,17 @@ public class JdbcTreatmentRepository {
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
     
-    public Treatment findByKey(String visit_appointment_patient_account, int visit_appointment_patient_version_number, 
+    public Treatment findByKey(String visit_appointment_patient_account,
     		int visit_appointment_version_number, DateTime visit_appointment_start_time) throws DataAccessException {
         Treatment treatment;
         try {
             Map<String, Object> params = new HashMap<String, Object>();
-            params.put("visit_appointment_patient_account", visit_appointment_patient_account);
-            params.put("visit_appointment_patient_version_number", visit_appointment_patient_version_number);
+            params.put("visit_appointment_patient_account", visit_appointment_patient_account);;
             params.put("visit_appointment_version_number", visit_appointment_version_number);
             params.put("visit_appointment_start_time", visit_appointment_start_time);
             treatment = this.namedParameterJdbcTemplate.queryForObject(
                     "SELECT * FROM appointment WHERE "
                     + "visit_appointment_patient_account=:visit_appointment_patient_account, "
-                    + "visit_appointment_patient_version_number=:visit_appointment_patient_version_number"
                     + "visit_appointment_version_number=:visit_appointment_version_number, "
                     + "visit_appointment_start_time=:visit_appointment_start_time",
                     params,
@@ -65,9 +63,9 @@ public class JdbcTreatmentRepository {
     public void addTreatment(Treatment new_treatment){
     	BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(new_treatment);
     	this.namedParameterJdbcTemplate.update(
-                "INSERT INTO treatment (visit_appointment_patient_account, visit_appointment_patient_version_number, "
+                "INSERT INTO treatment (visit_appointment_patient_account, "
                 + "visit_appointment_version_number, visit_appointment_start_time, start_time, end_time, procedure) " +
-                "VALUES (:visit_appointment_patient_account, :visit_appointment_patient_version_number, "
+                "VALUES (:visit_appointment_patient_account, "
                 + ":visit_appointment_version_number, :visit_appointment_start_time, :start_time, :end_time, :procedure)",
                 parameterSource);
     }

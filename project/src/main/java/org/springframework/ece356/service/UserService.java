@@ -37,8 +37,8 @@ public class UserService {
 	}
 
 	@Transactional(readOnly = true)
-	public Patient findLatestPatientRevisionById(String id) {
-		return patientRepository.findLatestRevision(id);
+	public Patient findPatientById(String id) {
+		return patientRepository.findByKey(id);
 	}
 
 	@Transactional(readOnly = true)
@@ -51,7 +51,7 @@ public class UserService {
 	public userType getType(User user){
 		if(doctorRepository.findByKey(user.getUserId()) != null){
 			return userType.DOCTOR;
-		}else if(patientRepository.findLatestRevision(user.getUserId()) != null){
+		}else if(patientRepository.findByKey(user.getUserId()) != null){
 			return userType.PATIENT;
 		}else if(user.getIsOfficer()){
 			return userType.ADMIN;

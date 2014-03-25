@@ -40,10 +40,6 @@ public class Appointment {
     @NotEmpty
     private String patient_account;
 
-    @Column(name = "patient_version_number")
-    @NotEmpty
-    private int patient_version_number;
-
     @Column(name = "doctor_account")
     @NotEmpty
     private String doctor_account;
@@ -66,14 +62,6 @@ public class Appointment {
     
     public void setPatientAccount(String patient_account) {
         this.patient_account = patient_account;
-    }
-
-    public int getPatientVersionNumber() {
-        return this.patient_version_number;
-    }
-    
-    public void setPatientVersionNumber(int patient_version_number) {
-        this.patient_version_number = patient_version_number;
     }
     
     public String getDoctorAccount() {

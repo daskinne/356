@@ -23,27 +23,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.persistence.Column;
 import javax.sql.DataSource;
 
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.ece356.model.Doctor;
 import org.springframework.ece356.model.Patient;
 import org.springframework.ece356.model.Pet;
 import org.springframework.ece356.model.User;
 import org.springframework.ece356.model.Visit;
 import org.springframework.ece356.repository.VisitRepository;
-import org.springframework.ece356.util.userType;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -74,13 +66,12 @@ public class JdbcPatientRepository {
 	}
 	
 	public void savePatient(Patient patient) {
-		patient.setVersionNumber(patient.getVersionNumber() + 1);
 		BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(patient);
 		try {
 			this.namedParameterJdbcTemplate.update(
                     "INSERT INTO patient "
-					+ "(user_id, version_number, phone_number, health_card, sin, address, current_health, doctor_account) values "
-                    + "(:userId, :versionNumber, :phoneNumber, :healthCard, :sin, :address, :currentHealth, :doctorAccount)",
+					+ "(user_id, phone_number, health_card, sin, address, current_health, doctor_account) values "
+                    + "(:userId, :phoneNumber, :healthCard, :sin, :address, :currentHealth, :doctorAccount)",
                     parameterSource);
 		} catch (EmptyResultDataAccessException ex) {
 			// TODO: handle this
@@ -89,16 +80,14 @@ public class JdbcPatientRepository {
 		}
 	}
 
-    public Patient findByKey(String user_id, int version_number) throws DataAccessException {
+    public Patient findByKey(String user_id) throws DataAccessException {
         Patient user;
         try {
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("user_id", user_id);
-            params.put("version_number", version_number);
             user = this.namedParameterJdbcTemplate.queryForObject(
                     "SELECT * FROM patient WHERE "
-                    + "user_id=:user_id, "
-                    + "version_number=:version_number",
+                    + "user_id=:user_id, ",
                     params,
                     ParameterizedBeanPropertyRowMapper.newInstance(Patient.class)
             );
@@ -108,44 +97,12 @@ public class JdbcPatientRepository {
         }
         return user;
     }
-
-	
-	/**
-	 * Loads the {@link User} with the supplied <code>id</code>; also loads the
-	 * {@link Pet Pets} and {@link Visit Visits} for the corresponding owner, if
-	 * not already loaded.
-	 */
-	public Patient findLatestRevision(String id) throws DataAccessException {
-		Patient patient;
-		try {
-			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("id", id);
-			
-			String max_rev_sql = "(SELECT version_number "
-									+ "FROM patient "
-									+ "WHERE patient.user_id=:id)";
-			patient = this.namedParameterJdbcTemplate
-					.queryForObject(
-							"SELECT * "
-									+ "FROM user,patient"
-									+ " WHERE patient.user_id=:id AND user.user_id=patient.user_id" 
-									+ " AND version_number >= all" + max_rev_sql,
-							params, ParameterizedBeanPropertyRowMapper
-									.newInstance(Patient.class));
-			
-		} catch (EmptyResultDataAccessException ex) {
-			return null;
-			// throw new ObjectRetrievalFailureException(User.class, id);
-		}
-		return patient;
-	}
 	
 	public void getDoctorsForPatient(Patient patient) {
         final List<Doctor> secondary_doctors = this.jdbcTemplate
-                .query("SELECT doctor_account as user_id FROM pati_doct WHERE patient_account = ? and patient_version_number = ?",
-                        ParameterizedBeanPropertyRowMapper
-                                .newInstance(Doctor.class), patient
-                                .getUserId(), patient.getVersionNumber());
+                .query("SELECT doctor_account as user_id FROM pati_doct WHERE patient_account = ?",
+                        ParameterizedBeanPropertyRowMapper.newInstance(Doctor.class), 
+                        patient.getUserId());
         Set<Doctor> docs_set = new HashSet<Doctor>();
         Doctor primary_doctor = new Doctor();
         primary_doctor.setUserId(patient.getDoctorAccount());
@@ -156,17 +113,7 @@ public class JdbcPatientRepository {
 	
     public Collection<Patient> findAllPatientsForDoctor(String user_id) {
         List<Patient> patients = new ArrayList<Patient>();
-        String doctor_patient_sql = "SELECT patient_account, patient_version_number FROM pati_doct WHERE doctor_account = '"
-                + user_id + "'";
-        String max_rev_sql = "(SELECT user_id, max(version_number) AS maxrev FROM patient where doctor_account = '"
-                + user_id
-                + "' GROUP BY user_id) UNION DIST ("
-                + doctor_patient_sql + ")";
-        String main_query = "(SELECT c.*  FROM patient c INNER JOIN ( "
-                + max_rev_sql
-                + " ) b "
-                + "ON c.user_id=b.user_id AND c.version_number=b.maxrev) UNION DISTINCT ("
-                + doctor_patient_sql + ")";
+        String main_query = "SELECT * FROM patient WHERE doctor_account = '" + user_id + "'";
         
         patients.addAll(this.jdbcTemplate.query(main_query,
                 ParameterizedBeanPropertyRowMapper.newInstance(Patient.class)));
@@ -175,19 +122,21 @@ public class JdbcPatientRepository {
     }
 	
     public Collection<Patient> findAllPatientsForStaff(String user_id) {
-        List<Patient> patients = new ArrayList<Patient>();
-        String user_doct_sql = "SELECT doctor_account FROM user_doct WHERE user_id = '"
-                + user_id + "'";
-        String max_rev_sql = "SELECT user_id, max(version_number) AS maxrev FROM patient where doctor_account in ("
-                + user_doct_sql + ") GROUP BY user_id";
-        String main_query = "SELECT c.*  FROM patient c INNER JOIN ( "
-                + max_rev_sql + " ) b "
-                + "ON c.user_id=b.user_id AND c.version_number=b.maxrev";
-        System.out.println(main_query);
-        
-        patients.addAll(this.jdbcTemplate.query(main_query,
-                ParameterizedBeanPropertyRowMapper.newInstance(Patient.class)));
-        
-        return patients;
+        //TODO: rewrite this.
+//        List<Patient> patients = new ArrayList<Patient>();
+//        String user_doct_sql = "SELECT doctor_account FROM user_doct WHERE user_id = '"
+//                + user_id + "'";
+//        String max_rev_sql = "SELECT user_id, max(version_number) AS maxrev FROM patient where doctor_account in ("
+//                + user_doct_sql + ") GROUP BY user_id";
+//        String main_query = "SELECT c.*  FROM patient c INNER JOIN ( "
+//                + max_rev_sql + " ) b "
+//                + "ON c.user_id=b.user_id AND c.version_number=b.maxrev";
+//        System.out.println(main_query);
+//        
+//        patients.addAll(this.jdbcTemplate.query(main_query,
+//                ParameterizedBeanPropertyRowMapper.newInstance(Patient.class)));
+//        
+//        return patients;
+        return null;
     }
 }

@@ -40,10 +40,6 @@ public class Visit {
     @NotEmpty
     private String appointment_patient_account;
 
-    @Column(name = "appointment_patient_version_number")
-    @NotEmpty
-    private int appointment_patient_version_number;
-
     @Column(name = "appointment_version_number")
     @NotEmpty
     private int appointment_version_number;
@@ -72,14 +68,6 @@ public class Visit {
         this.appointment_patient_account = appointment_patient_account;
     }
 
-    public int getAppointmentPatientVersionNumber() {
-        return this.appointment_patient_version_number;
-    }
-    
-    public void setAppointmentPatientVersionNumber(int appointment_patient_version_number) {
-        this.appointment_patient_version_number = appointment_patient_version_number;
-    }
-    
     public int getAppointmentVersionNumber() {
         return this.appointment_version_number;
     }
