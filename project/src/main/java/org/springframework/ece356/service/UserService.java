@@ -84,7 +84,7 @@ public class UserService {
         // Populate list of doctors for a patient.
         for (Patient patient : patients) patientRepository.getDoctorsForPatient(patient);
         
-        return new ArrayList<Patient>();
+        return patients;
     }
     
     public void populatePatientsForDoctor(Doctor doctor) {
