@@ -47,7 +47,6 @@ public class JdbcVisitRepository {
     public Treatment findTreatmentForVisit(Visit visit) {
         return treatmentRepo.findByKey(
                 visit.getAppointmentPatientAccount(),
-                visit.getAppointmentPatientVersionNumber(),
                 visit.getAppointmentVersionNumber(),
                 visit.getAppointmentStartTime());
     }
