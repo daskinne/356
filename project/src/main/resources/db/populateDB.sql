@@ -27,6 +27,12 @@ INSERT IGNORE INTO patient values ('pete','4152002003','000000000003','123456789
 -- Assign patient pat to Doctor Dan
 INSERT IGNORE INTO pati_doct VALUES ('dan','pat');
 
+INSERT IGNORE INTO appointment VALUES ('pat', 'dan', 0, '2011-03-12', '2011-03-12');
+INSERT IGNORE INTO appointment VALUES ('pat', 'dan', 1, '2011-03-12', '2011-03-12');
+INSERT IGNORE INTO appointment VALUES ('pat', 'dan', 2, '2011-03-12', '2011-03-12');
+INSERT IGNORE INTO appointment VALUES ('pat', 'dan', 3, '2011-03-12', '2011-03-12');
+INSERT IGNORE INTO appointment VALUES ('pat', 'dan', 4, '2011-03-12', '2011-03-12');
+INSERT IGNORE INTO appointment VALUES ('pat', 'dan', 0, '2011-03-11', '2011-03-12');
 
 -- Create 3 Prescriptions
 -- Mapped in software to dosages etc.

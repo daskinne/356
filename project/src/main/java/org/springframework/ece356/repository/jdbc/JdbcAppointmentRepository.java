@@ -1,5 +1,8 @@
 package org.springframework.ece356.repository.jdbc;
 
+import java.awt.List;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.ece356.model.Appointment;
+import org.springframework.ece356.model.Patient;
 import org.springframework.ece356.model.Visit;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -71,9 +75,34 @@ public class JdbcAppointmentRepository {
         }
         return user;
     }
+    
+    public Collection<Appointment> findLatestByKey(String patient_account) {
+    	Collection<Appointment> appointments = new ArrayList<Appointment>();
+    	
+    	try {
+	    	String naturalJoinThis = "(SELECT patient_account, start_time, max(version_number) "
+	    			+ "FROM appointment "
+	    			+ "WHERE patient_account=" + patient_account +") maxresult ";
+	    	
+	    	appointments.addAll(this.jdbcTemplate.query("SELECT * "
+	    			+ "FROM appointment, " + naturalJoinThis
+	    			+ "WHERE appointment.patient_account=maxresult.patient_account "
+	    			+ 	"AND appointment.start_time=maxresult.start_time "
+	    			+ 	"AND appointment.version_number=maxresult.version_number",
+	                ParameterizedBeanPropertyRowMapper.newInstance(Appointment.class)));
+	    	for (Appointment a: appointments)
+	    		System.out.println(a);
+	    	
+    	} catch (EmptyResultDataAccessException ex) {
+    		// TODO: handle this case
+        	return null;
+//            throw new ObjectRetrievalFailureException(User.class, id);
+        }	
+    	return appointments;
+    }
 
     public void addAppointment(Appointment new_appointment){
-    	BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(new_appointment);
+    	BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(new_appointment);    	
     	this.namedParameterJdbcTemplate.update(
                 "INSERT INTO appointment (patient_account, doctor_account, version_number, start_time, end_time) " +
                 "VALUES (:patient_account, :doctor_account, :version_number, :start_time, :end_time)",
